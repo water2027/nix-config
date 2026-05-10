@@ -1,0 +1,9 @@
+keys:
+  - &admin age160swla667ef9fp4e5r0xrmcj3xnwxeykhf9rcaulyf4at3sg4ddq2kt4em
+  - &amd-laptop age13u5sl9477u5039gea06xnglml85thzz3s5vftqhj0td336t3eqgsnjk0vd
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+        - *admin
+        - *amd-laptop
