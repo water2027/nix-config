@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -8,7 +8,7 @@
     curl
     sops
     ssh-to-age
-    devenv
+    inputs.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv
 
     zip
     unzip
