@@ -8,6 +8,15 @@
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
+    settings = {
+      custom.proxy = {
+        command = "echo proxy";
+        when = ''test -n "$http_proxy$https_proxy$all_proxy$HTTP_PROXY$HTTPS_PROXY$ALL_PROXY"'';
+        symbol = "󰖟 ";
+        style = "bold yellow";
+        format = "[$symbol$output]($style) ";
+      };
+    };
   };
   programs.zsh = {
     enable = true;
@@ -24,13 +33,11 @@
       proxy() {
         export http_proxy="http://127.0.0.1:20171"
         export https_proxy="http://127.0.0.1:20171"
-        echo "Proxy enabled: $http_proxy"
       }
 
       unproxy() {
         unset http_proxy
         unset https_proxy
-        echo "Proxy disabled."
       }
 
       toggle_proxy() {
@@ -38,6 +45,10 @@
           unproxy
         else
           proxy
+        fi
+
+        if [[ -n "''${ZLE_STATE-}" ]]; then
+          zle reset-prompt
         fi
       }
 
