@@ -5,6 +5,7 @@
     ./nixvim/completion.nix
     ./nixvim/editor.nix
     ./nixvim/dap.nix
+    ./nixvim/competitive.nix
     ./nixvim/keymaps.nix
   ];
 }

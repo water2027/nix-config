@@ -66,6 +66,30 @@
     }
     {
       mode = "n";
+      key = "<leader>cr";
+      action = "<cmd>CompetiTest run<CR>";
+      options.desc = "Run competitive tests";
+    }
+    {
+      mode = "n";
+      key = "<leader>cp";
+      action = "<cmd>CompetiTest receive problem<CR>";
+      options.desc = "Receive problem";
+    }
+    {
+      mode = "n";
+      key = "<leader>cc";
+      action = "<cmd>CompetiTest receive contest<CR>";
+      options.desc = "Receive contest";
+    }
+    {
+      mode = "n";
+      key = "<leader>ct";
+      action = "<cmd>CompetiTest edit_testcase<CR>";
+      options.desc = "Edit testcases";
+    }
+    {
+      mode = "n";
       key = "<leader>xx";
       action = "<cmd>Trouble diagnostics toggle<CR>";
       options.desc = "Diagnostics";
