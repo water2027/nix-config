@@ -66,27 +66,51 @@
     }
     {
       mode = "n";
-      key = "<leader>cr";
-      action = "<cmd>CompetiTest run<CR>";
-      options.desc = "Run competitive tests";
+      key = "<leader>lm";
+      action = "<cmd>Leet<CR>";
+      options.desc = "LeetCode menu";
     }
     {
       mode = "n";
-      key = "<leader>cp";
-      action = "<cmd>CompetiTest receive problem<CR>";
-      options.desc = "Receive problem";
+      key = "<leader>ll";
+      action = "<cmd>Leet list<CR>";
+      options.desc = "LeetCode list";
     }
     {
       mode = "n";
-      key = "<leader>cc";
-      action = "<cmd>CompetiTest receive contest<CR>";
-      options.desc = "Receive contest";
+      key = "<leader>lr";
+      action = "<cmd>Leet run<CR>";
+      options.desc = "LeetCode run";
     }
     {
       mode = "n";
-      key = "<leader>ct";
-      action = "<cmd>CompetiTest edit_testcase<CR>";
-      options.desc = "Edit testcases";
+      key = "<leader>ls";
+      action = "<cmd>Leet submit<CR>";
+      options.desc = "LeetCode submit";
+    }
+    {
+      mode = "n";
+      key = "<leader>ld";
+      action = "<cmd>Leet daily<CR>";
+      options.desc = "LeetCode daily";
+    }
+    {
+      mode = "n";
+      key = "<leader>lx";
+      action = "<cmd>Leet random<CR>";
+      options.desc = "LeetCode random";
+    }
+    {
+      mode = "n";
+      key = "<leader>lg";
+      action = "<cmd>Leet lang<CR>";
+      options.desc = "LeetCode language";
+    }
+    {
+      mode = "n";
+      key = "<leader>lu";
+      action = "<cmd>Leet cookie update<CR>";
+      options.desc = "LeetCode cookie";
     }
     {
       mode = "n";
