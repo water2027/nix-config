@@ -27,8 +27,8 @@ with lib;
           email = config.my.git.userEmail;
         };
 
-        http.proxy = "http://127.0.0.1:20171";
-        https.proxy = "http://127.0.0.1:20171";
+        http."https://github.com/".proxy = "http://127.0.0.1:20171";
+        http."https://www.github.com/".proxy = "http://127.0.0.1:20171";
       };
     };
   };

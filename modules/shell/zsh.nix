@@ -33,11 +33,15 @@
       proxy() {
         export http_proxy="http://127.0.0.1:20171"
         export https_proxy="http://127.0.0.1:20171"
+        export no_proxy="127.0.0.1,localhost,::1,mirrors.tuna.tsinghua.edu.cn,.tuna.tsinghua.edu.cn,mirrors.ustc.edu.cn,.ustc.edu.cn"
+        export NO_PROXY="$no_proxy"
       }
 
       unproxy() {
         unset http_proxy
         unset https_proxy
+        unset no_proxy
+        unset NO_PROXY
       }
 
       toggle_proxy() {
