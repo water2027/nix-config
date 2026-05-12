@@ -78,7 +78,7 @@
     }
     {
       mode = "n";
-      key = "<leader>lr";
+      key = "<leader>lt";
       action = "<cmd>Leet run<CR>";
       options.desc = "LeetCode run";
     }
@@ -96,13 +96,13 @@
     }
     {
       mode = "n";
-      key = "<leader>lx";
+      key = "<leader>lr";
       action = "<cmd>Leet random<CR>";
       options.desc = "LeetCode random";
     }
     {
       mode = "n";
-      key = "<leader>lg";
+      key = "<leader>lL";
       action = "<cmd>Leet lang<CR>";
       options.desc = "LeetCode language";
     }
@@ -111,6 +111,12 @@
       key = "<leader>lu";
       action = "<cmd>Leet cookie update<CR>";
       options.desc = "LeetCode cookie";
+    }
+    {
+      mode = "n";
+      key = "<leader>e";
+      action = "<cmd>Oil<CR>";
+      options.desc = "Open file explorer";
     }
     {
       mode = "n";
@@ -162,6 +168,76 @@
     }
     {
       mode = "n";
+      key = "<leader>cf";
+      action = "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>";
+      options.desc = "Format file";
+    }
+    {
+      mode = "n";
+      key = "<leader>rn";
+      action = "<cmd>lua vim.lsp.buf.rename()<CR>";
+      options.desc = "Rename symbol";
+    }
+    {
+      mode = "n";
+      key = "<leader>/";
+      action.__raw = ''
+        function()
+          require("Comment.api").toggle.linewise.current()
+        end
+      '';
+      options.desc = "Toggle comment";
+    }
+    {
+      mode = "x";
+      key = "<leader>/";
+      action.__raw = ''
+        function()
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "nx", false)
+          require("Comment.api").toggle.linewise(vim.fn.visualmode())
+        end
+      '';
+      options.desc = "Toggle comment";
+    }
+    {
+      mode = "t";
+      key = "<Esc>";
+      action = "<C-\\><C-n>";
+      options.desc = "Exit terminal mode";
+    }
+    {
+      mode = "n";
+      key = "<leader>tt";
+      action = "<cmd>ToggleTerm direction=float<CR>";
+      options.desc = "Toggle terminal";
+    }
+    {
+      mode = "n";
+      key = "<C-t>";
+      action = "<cmd>ToggleTerm direction=float<CR>";
+      options.desc = "Toggle terminal";
+    }
+    {
+      mode = "n";
+      key = "<leader>th";
+      action = "<cmd>ToggleTerm direction=horizontal<CR>";
+      options.desc = "Horizontal terminal";
+    }
+    {
+      mode = "n";
+      key = "<leader>tv";
+      action = "<cmd>ToggleTerm direction=vertical<CR>";
+      options.desc = "Vertical terminal";
+    }
+    {
+      mode = "t";
+      key = "<C-t>";
+      action = "<C-\\><C-n><cmd>ToggleTerm<CR>";
+      options.desc = "Toggle terminal";
+    }
+
+    {
+      mode = "n";
       key = "[d";
       action = "<cmd>lua vim.diagnostic.jump({ count = -1, float = true })<CR>";
       options.desc = "Previous diagnostic";
@@ -171,18 +247,6 @@
       key = "]d";
       action = "<cmd>lua vim.diagnostic.jump({ count = 1, float = true })<CR>";
       options.desc = "Next diagnostic";
-    }
-    {
-      mode = "n";
-      key = "<leader>p";
-      action = "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>";
-      options.desc = "Format file";
-    }
-    {
-      mode = "n";
-      key = "<leader>rn";
-      action = "<cmd>lua vim.lsp.buf.rename()<CR>";
-      options.desc = "Rename symbol";
     }
     {
       mode = "n";

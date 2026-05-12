@@ -87,8 +87,51 @@
       luasnip.enable = true;
       web-devicons.enable = true;
       trouble.enable = true;
+      oil = {
+        enable = true;
+        settings = {
+          default_file_explorer = true;
+          columns = [ "icon" ];
+          view_options.show_hidden = true;
+          win_options = {
+            wrap = false;
+            signcolumn = "yes:2";
+            cursorcolumn = false;
+            foldcolumn = "0";
+            spell = false;
+            list = false;
+            conceallevel = 3;
+            concealcursor = "ncv";
+          };
+        };
+      };
+      todo-comments = {
+        enable = true;
+        keymaps = {
+          todoTelescope = {
+            key = "<leader>fT";
+            options.desc = "Find TODOs";
+          };
+          todoTrouble = {
+            key = "<leader>xt";
+            options.desc = "TODOs";
+          };
+        };
+      };
       direnv.enable = true;
       flash.enable = true;
+      comment.enable = true;
+      toggleterm = {
+        enable = true;
+        settings = {
+          direction = "float";
+          start_in_insert = true;
+          shade_terminals = true;
+          float_opts = {
+            border = "curved";
+          };
+        };
+      };
     };
 
     extraPlugins = with pkgs.vimPlugins; [
