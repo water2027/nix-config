@@ -8,6 +8,7 @@
   imports = [
     ../../modules/home/common.nix
     ../../modules/programs/direnv.nix
+    ../../modules/programs/emacs.nix
     ../../modules/programs/git.nix
     ../../modules/programs/kitty.nix
     ../../modules/programs/ssh.nix
