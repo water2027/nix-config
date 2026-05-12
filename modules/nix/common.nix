@@ -26,7 +26,7 @@ let
   };
 in
 {
-  environment.variables = proxyEnv;
+  # environment.variables = proxyEnv;
 
   nix.envVars = proxyEnv;
 
