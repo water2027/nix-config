@@ -87,6 +87,7 @@
     nil
     mpv
     ffmpeg
+    texlive.combined.scheme-full
   ];
 
   fonts.packages = with pkgs; [
