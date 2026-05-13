@@ -1,10 +1,6 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    texlab
-  ];
-
   programs.emacs = {
     enable = true;
     package = pkgs.emacs-pgtk;
@@ -27,8 +23,6 @@
         which-key
         yasnippet
         yasnippet-snippets
-        auctex
-        cdlatex
       ];
   };
 }

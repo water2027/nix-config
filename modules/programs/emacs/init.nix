@@ -5,8 +5,7 @@
         (dolist (file '("core.el"
                         "org.el"
                         "evil.el"
-                        "completion.el"
-                        "latex.el"))
+                        "completion.el"))
           (load-file (expand-file-name file config-dir))))
     '';
 
@@ -14,6 +13,5 @@
     ".emacs.d/lisp/org.el".source = ./lisp/org.el;
     ".emacs.d/lisp/evil.el".source = ./lisp/evil.el;
     ".emacs.d/lisp/completion.el".source = ./lisp/completion.el;
-    ".emacs.d/lisp/latex.el".source = ./lisp/latex.el;
   };
 }
