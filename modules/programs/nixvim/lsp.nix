@@ -28,6 +28,7 @@
         cssls = localLsp;
         jsonls = localLsp;
         pyright = localLsp;
+        tinymist.enable = true;
       };
     };
 }

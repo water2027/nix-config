@@ -74,6 +74,7 @@
           python
           rust
           toml
+          typst
           tsx
           typescript
           vue
