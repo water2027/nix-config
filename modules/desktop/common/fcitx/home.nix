@@ -128,7 +128,7 @@
 
         pinyin = {
           globalSection = {
-            ShuangpinProfile = "Ziranma";
+            ShuangpinProfile = "Xiaohe";
             ShowShuangpinMode = true;
             PageSize = 7;
             FullWidthPunctuation = false;

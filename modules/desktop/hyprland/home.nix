@@ -5,13 +5,15 @@
     fuzzel
     swaynotificationcenter
     copyq
+    brightnessctl
     grim
+    pavucontrol
+    playerctl
     slurp
     wl-clipboard
     linux-wallpaperengine
   ];
   imports = [
-    ./conf/declare.nix
     ./conf/autostart.nix
     ./conf/animations.nix
     ./conf/environment.nix
@@ -20,7 +22,6 @@
     ./conf/workspace.nix
     ./conf/window.nix
     ./conf/windowrule.nix
-    ./conf/workspace.nix
     ./conf/keybinding.nix
     ./conf/layout.nix
     ./conf/misc.nix
@@ -32,13 +33,39 @@
   wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland = {
     systemd.enable = true;
+    configType = "lua";
     settings = {
       env = [
-        "XDG_CURRENT_DESKTOP,Hyprland"
-        "XDG_SESSION_TYPE,wayland"
-        "XDG_SESSION_DESKTOP,Hyprland"
-        "QT_QPA_PLATFORM,wayland;xcb"
-        "GDK_BACKEND,wayland,x11,*"
+        {
+          _args = [
+            "XDG_CURRENT_DESKTOP"
+            "Hyprland"
+          ];
+        }
+        {
+          _args = [
+            "XDG_SESSION_TYPE"
+            "wayland"
+          ];
+        }
+        {
+          _args = [
+            "XDG_SESSION_DESKTOP"
+            "Hyprland"
+          ];
+        }
+        {
+          _args = [
+            "QT_QPA_PLATFORM"
+            "wayland;xcb"
+          ];
+        }
+        {
+          _args = [
+            "GDK_BACKEND"
+            "wayland,x11,*"
+          ];
+        }
       ];
     };
   };

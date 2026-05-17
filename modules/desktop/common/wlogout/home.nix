@@ -1,28 +1,28 @@
-{ pkgs, ... }:
+{ config, ... }:
 let
-  powerAction = "/home/water/.local/bin/power-action.sh";
+  powerAction = "${config.home.homeDirectory}/.local/bin/power-action.sh";
 in
 {
-	imports = [
-		./style.nix
-	];
-	programs.wlogout.enable = true;
+  imports = [
+    ./style.nix
+  ];
+  programs.wlogout.enable = true;
   programs.wlogout.layout = [
-		{
+    {
       label = "lock";
-      action = "/home/water/.local/bin/power-action.sh lock";
+      action = "${powerAction} lock";
       text = "锁定 (l)";
       keybind = "l";
     }
     {
-	    label = "hibernate";
+      label = "hibernate";
       action = "systemctl hibernate";
       text = "休眠 (h)";
       keybind = "h";
     }
     {
       label = "logout";
-      action = "/home/water/.local/bin/power-action.sh logout";
+      action = "${powerAction} logout";
       text = "登出 (e)";
       keybind = "e";
     }
