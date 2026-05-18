@@ -1,9 +1,30 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   xdg.dataFile = {
     "fcitx5/themes/OriLight".source = ./themes/OriLight;
     "fcitx5/themes/OriDark".source = ./themes/OriDark;
+    "fcitx5/rime" = {
+      source = inputs.rime-ice;
+      recursive = true;
+    };
+    "fcitx5/rime/default.custom.yaml".text = ''
+      patch:
+        schema_list:
+          - schema: double_pinyin_flypy
+          - schema: rime_ice
+        menu/page_size: 7
+    '';
+    "fcitx5/rime/melt_eng.custom.yaml".text = ''
+      patch:
+        speller/algebra:
+          __include: melt_eng.schema.yaml:/algebra_flypy
+    '';
+    "fcitx5/rime/radical_pinyin.custom.yaml".text = ''
+      patch:
+        speller/algebra:
+          __include: radical_pinyin.schema.yaml:/algebra_flypy
+    '';
   };
 
   i18n.inputMethod = {
@@ -22,13 +43,17 @@
         "Groups/0" = {
           Name = "Default";
           "Default Layout" = "us";
-          DefaultIM = "shuangpin";
+          DefaultIM = "rime";
         };
         "Groups/0/Items/0" = {
           Name = "keyboard-us";
           Layout = "";
         };
         "Groups/0/Items/1" = {
+          Name = "rime";
+          Layout = "";
+        };
+        "Groups/0/Items/2" = {
           Name = "shuangpin";
           Layout = "";
         };

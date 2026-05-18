@@ -37,6 +37,11 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
     };
+
+    rime-ice = {
+      url = "github:iDvel/rime-ice";
+      flake = false;
+    };
   };
 
   outputs =

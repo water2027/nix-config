@@ -1011,6 +1011,22 @@
         "type": "github"
       }
     },
+    "rime-ice": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1779100388,
+        "narHash": "sha256-z/5Vf/i4IdkxNUObOhfW4T7wP0fICmSCgpKu2E2zI1M=",
+        "owner": "iDvel",
+        "repo": "rime-ice",
+        "rev": "a5d123bcb5d3f259560c262bd6e1fb64bfd92fb3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iDvel",
+        "repo": "rime-ice",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "claude-code": "claude-code",
@@ -1020,6 +1036,7 @@
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixpkgs": "nixpkgs_8",
         "nixvim": "nixvim",
+        "rime-ice": "rime-ice",
         "sops-nix": "sops-nix"
       }
     },
