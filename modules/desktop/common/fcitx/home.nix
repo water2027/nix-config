@@ -1,4 +1,14 @@
-{ inputs, pkgs, ... }:
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
+
+let
+  rimeDir = "${config.xdg.dataHome}/fcitx5/rime";
+in
 
 {
   xdg.dataFile = {
@@ -12,8 +22,11 @@
       patch:
         schema_list:
           - schema: double_pinyin_flypy
-          - schema: rime_ice
         menu/page_size: 7
+    '';
+    "fcitx5/rime/double_pinyin_flypy.custom.yaml".text = ''
+      patch:
+        switches/@1/reset: 1
     '';
     "fcitx5/rime/melt_eng.custom.yaml".text = ''
       patch:
@@ -51,10 +64,6 @@
         };
         "Groups/0/Items/1" = {
           Name = "rime";
-          Layout = "";
-        };
-        "Groups/0/Items/2" = {
-          Name = "shuangpin";
           Layout = "";
         };
       };
@@ -281,6 +290,18 @@
 
     fcitx5.ignoreUserConfig = true;
   };
+
+  home.activation.deployRimeIce = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    rime_dir="${rimeDir}"
+
+    if [ -e "$rime_dir/build/default.yaml" ] && ! ${pkgs.gnugrep}/bin/grep -q "double_pinyin_flypy" "$rime_dir/build/default.yaml"; then
+      mv "$rime_dir/build" "$rime_dir/build.before-rime-ice"
+    fi
+
+    cd "$rime_dir"
+    ${pkgs.librime}/bin/rime_deployer --build "$rime_dir" "$rime_dir" "$rime_dir/build"
+    ${pkgs.librime}/bin/rime_deployer --set-active-schema double_pinyin_flypy
+  '';
 
   home.sessionVariables = {
     #GTK_IM_MODULE = "fcitx";

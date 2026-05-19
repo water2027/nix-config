@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 
 let
   lua = lib.generators.mkLuaInline;
@@ -18,6 +18,24 @@ let
   };
   toLua = lib.generators.toLua { };
   exec = command: "hl.dsp.exec_cmd(${toLua command})";
+  pgrep = "${pkgs.procps}/bin/pgrep";
+  pkill = "${pkgs.procps}/bin/pkill";
+  waybar = lib.getExe pkgs.waybar;
+  linuxWallpaperEngine = lib.getExe pkgs.linux-wallpaperengine;
+  toggleWaybar = pkgs.writeShellScriptBin "toggle-waybar" ''
+    if ${pgrep} -f '/bin/waybar($| )' >/dev/null; then
+      ${pkill} -f '/bin/waybar($| )'
+    else
+      exec ${waybar}
+    fi
+  '';
+  toggleWallpaper = pkgs.writeShellScriptBin "toggle-wallpaper" ''
+    if ${pgrep} -f '/bin/linux-wallpaperengine.*2970412969' >/dev/null; then
+      ${pkill} -f '/bin/linux-wallpaperengine.*2970412969'
+    else
+      exec ${linuxWallpaperEngine} -r eDP-1 --scaling fill 2970412969
+    fi
+  '';
   workspace = number: bind "${mainMod} + ${number}" ''hl.dsp.focus({ workspace = "${number}" })'';
   moveToWorkspace =
     number:
@@ -31,10 +49,8 @@ in
       (bind "${mainMod} + C" "hl.dsp.window.close()")
       (bind "${mainMod} + E" (exec "thunar"))
       (bind "${mainMod} + R" (exec "fuzzel"))
-      (bind "${mainMod} + O" (exec "pgrep -x waybar >/dev/null && pkill -x waybar || waybar"))
-      (bind "${mainMod} + P" (
-        exec "pgrep -f 'linux-wallpaperengine.*2970412969' >/dev/null && pkill -f 'linux-wallpaperengine.*2970412969' || linux-wallpaperengine -r 'eDP-1' --scaling fill 2970412969"
-      ))
+      (bind "${mainMod} + O" (exec (lib.getExe toggleWaybar)))
+      (bind "${mainMod} + P" (exec (lib.getExe toggleWallpaper)))
       (bind "${mainMod} + Escape" (exec "pgrep -x wlogout >/dev/null && pkill -x wlogout || wlogout"))
 
       (bind "${mainMod} + SHIFT + h" ''hl.dsp.layout("colresize -0.05")'')
