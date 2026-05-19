@@ -16,6 +16,7 @@
 
     keybindings = {
       "ctrl+v" = "launch --type=background --allow-remote-control --keep-focus ~/.local/bin/clip2path";
+      "ctrl+shift+enter" = "launch --cwd=current";
     };
   };
 
