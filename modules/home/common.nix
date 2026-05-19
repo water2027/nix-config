@@ -20,6 +20,7 @@ in
     fd
     bat
     eza
+    lazygit
   ];
 
   home.shellAliases = {
