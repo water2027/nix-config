@@ -11,6 +11,7 @@
     ../../modules/programs/emacs.nix
     ../../modules/programs/git.nix
     ../../modules/programs/kitty.nix
+    ../../modules/programs/proxychains.nix
     ../../modules/programs/ssh.nix
     ../../modules/shell/zsh.nix
     ../../modules/desktop/hyprland/home.nix

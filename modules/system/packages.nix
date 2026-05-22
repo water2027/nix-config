@@ -6,6 +6,7 @@
     vim
     wget
     curl
+    proxychains-ng
     sops
     ssh-to-age
     inputs.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv

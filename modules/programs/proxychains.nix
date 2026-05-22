@@ -1,0 +1,17 @@
+{ ... }:
+
+{
+  xdg.configFile."proxychains/proxychains.conf".text = ''
+    strict_chain
+    proxy_dns
+    tcp_read_time_out 15000
+    tcp_connect_time_out 8000
+
+    [ProxyList]
+    http 127.0.0.1 20171
+  '';
+
+  home.shellAliases = {
+    pdevenv = "proxychains4 -f ~/.config/proxychains/proxychains.conf devenv";
+  };
+}
