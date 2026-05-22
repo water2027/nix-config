@@ -21,6 +21,10 @@
           installRustfmt = false;
         };
         ts_ls = localLsp;
+        vue_ls = {
+          enable = true;
+          vtslsIntegration = false;
+        };
         html = localLsp;
         cssls = localLsp;
         jsonls = localLsp;

@@ -21,6 +21,8 @@ in
     bat
     eza
     lazygit
+    nodejs
+    python3
   ];
 
   home.shellAliases = {
