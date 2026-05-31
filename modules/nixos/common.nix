@@ -34,7 +34,7 @@
 
   nix.settings.auto-optimise-store = true;
 
-  environment.enableAllTerminfo = true;
+  environment.enableAllTerminfo = false;
 
   environment.sessionVariables = {
     EDITOR = "vim";
