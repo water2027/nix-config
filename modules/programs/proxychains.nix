@@ -10,8 +10,4 @@
     [ProxyList]
     http 127.0.0.1 20171
   '';
-
-  home.shellAliases = {
-    pdevenv = "proxychains4 -f ~/.config/proxychains/proxychains.conf devenv";
-  };
 }

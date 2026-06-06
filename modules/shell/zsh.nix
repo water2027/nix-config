@@ -27,10 +27,6 @@
     syntaxHighlighting.enable = true;
 
     initContent = ''
-      if command -v devenv >/dev/null 2>&1; then
-        eval "$(devenv hook zsh)"
-      fi
-
       proxy() {
         export http_proxy="http://127.0.0.1:20171"
         export https_proxy="http://127.0.0.1:20171"
