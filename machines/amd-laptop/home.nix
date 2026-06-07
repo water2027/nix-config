@@ -53,6 +53,7 @@
       firefox
 
       codex
+      pi-coding-agent
       pnpm
 
       typst
