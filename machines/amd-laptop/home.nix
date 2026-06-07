@@ -46,6 +46,8 @@
       wechat
       feishu
 
+      translate-shell
+
       obsidian
 
       firefox
