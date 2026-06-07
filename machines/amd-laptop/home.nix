@@ -53,6 +53,7 @@
       firefox
 
       codex
+      pnpm
 
       typst
       tinymist
