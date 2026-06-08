@@ -174,7 +174,7 @@
     }
     {
       mode = "n";
-      key = "<leader>rn";
+      key = "<leader>cr";
       action = "<cmd>lua vim.lsp.buf.rename()<CR>";
       options.desc = "Rename symbol";
     }

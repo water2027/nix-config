@@ -46,11 +46,24 @@
       laststatus = 3;
       signcolumn = "yes:2";
       ruler = false;
+      foldenable = true;
+      foldmethod = "indent";
+      foldlevel = 99;
+      foldlevelstart = 99;
+      foldnestmax = 10;
+      foldcolumn = "0";
     };
 
     plugins = {
       which-key.enable = true;
       gitsigns.enable = true;
+      diffview.enable = true;
+      neogit = {
+        enable = true;
+        settings = {
+          integrations.diffview = true;
+        };
+      };
       treesitter = {
         enable = true;
         grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
@@ -165,5 +178,80 @@
         vim.api.nvim_set_hl(0, group, { link = link, default = true })
       end
     '';
+
+    keymaps = [
+      {
+        mode = "n";
+        key = "<leader>gg";
+        action = "<cmd>Neogit<CR>";
+        options.desc = "Git status";
+      }
+      {
+        mode = "n";
+        key = "<leader>gd";
+        action = "<cmd>DiffviewOpen<CR>";
+        options.desc = "Git diff";
+      }
+      {
+        mode = "n";
+        key = "<leader>gD";
+        action = "<cmd>DiffviewClose<CR>";
+        options.desc = "Close git diff";
+      }
+      {
+        mode = "n";
+        key = "<leader>gh";
+        action = "<cmd>DiffviewFileHistory %<CR>";
+        options.desc = "File history";
+      }
+      {
+        mode = "n";
+        key = "<leader>gH";
+        action = "<cmd>DiffviewFileHistory<CR>";
+        options.desc = "Repository history";
+      }
+      {
+        mode = "n";
+        key = "]h";
+        action = "<cmd>Gitsigns next_hunk<CR>";
+        options.desc = "Next git hunk";
+      }
+      {
+        mode = "n";
+        key = "[h";
+        action = "<cmd>Gitsigns prev_hunk<CR>";
+        options.desc = "Previous git hunk";
+      }
+      {
+        mode = "n";
+        key = "<leader>gp";
+        action = "<cmd>Gitsigns preview_hunk<CR>";
+        options.desc = "Preview hunk";
+      }
+      {
+        mode = "n";
+        key = "<leader>gb";
+        action = "<cmd>Gitsigns blame_line<CR>";
+        options.desc = "Git blame line";
+      }
+      {
+        mode = [
+          "n"
+          "v"
+        ];
+        key = "<leader>gs";
+        action = "<cmd>Gitsigns stage_hunk<CR>";
+        options.desc = "Stage hunk";
+      }
+      {
+        mode = [
+          "n"
+          "v"
+        ];
+        key = "<leader>gr";
+        action = "<cmd>Gitsigns reset_hunk<CR>";
+        options.desc = "Reset hunk";
+      }
+    ];
   };
 }
