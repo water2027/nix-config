@@ -21,15 +21,22 @@
     };
   };
 
-  programs.nixvim.plugins.telescope = {
+  programs.nixvim.plugins.fzf-lua = {
     enable = true;
-    extensions.fzf-native = {
-      enable = true;
-      settings = {
-        fuzzy = true;
-        override_file_sorter = true;
-        override_generic_sorter = true;
-        case_mode = "smart_case";
+    profile = "telescope";
+    settings = {
+      keymap.fzf = {
+        tab = "down";
+        btab = "up";
+      };
+      files = {
+        hidden = true;
+        git_icons = true;
+        file_icons = true;
+        color_icons = true;
+      };
+      grep = {
+        rg_glob = true;
       };
     };
   };

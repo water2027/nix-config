@@ -1,24 +1,19 @@
-{ pkgs, ... }:
 {
   programs.nixvim = {
-    extraPlugins = with pkgs.vimPlugins; [
-      leetcode-nvim
-    ];
-
-    extraConfigLua = ''
-      require("leetcode").setup({
+    plugins.leetcode = {
+      enable = true;
+      settings = {
         cn = {
-          enabled = true,
-        },
-        lang = "cpp",
+          enabled = true;
+        };
+        lang = "cpp";
         picker = {
-          provider = "telescope",
-        },
+          provider = "fzf-lua";
+        };
         plugins = {
-          non_standalone = true,
-        },
-      })
-    '';
-
+          non_standalone = true;
+        };
+      };
+    };
   };
 }

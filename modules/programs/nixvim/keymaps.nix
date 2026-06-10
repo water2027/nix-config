@@ -31,37 +31,37 @@
     {
       mode = "n";
       key = "<leader>ff";
-      action = "<cmd>Telescope find_files<CR>";
+      action = "<cmd>FzfLua files<CR>";
       options.desc = "Find files";
     }
     {
       mode = "n";
       key = "<leader>fg";
-      action = "<cmd>Telescope live_grep<CR>";
+      action = "<cmd>FzfLua live_grep<CR>";
       options.desc = "Live grep";
     }
     {
       mode = "n";
       key = "<leader>fb";
-      action = "<cmd>Telescope buffers<CR>";
+      action = "<cmd>FzfLua buffers<CR>";
       options.desc = "Find buffers";
     }
     {
       mode = "n";
       key = "<leader>fr";
-      action = "<cmd>Telescope oldfiles<CR>";
+      action = "<cmd>FzfLua oldfiles<CR>";
       options.desc = "Recent files";
     }
     {
       mode = "n";
       key = "<leader>fh";
-      action = "<cmd>Telescope help_tags<CR>";
+      action = "<cmd>FzfLua helptags<CR>";
       options.desc = "Help tags";
     }
     {
       mode = "n";
       key = "<leader>fd";
-      action = "<cmd>Telescope diagnostics<CR>";
+      action = "<cmd>FzfLua diagnostics_workspace<CR>";
       options.desc = "Diagnostics";
     }
     {
@@ -115,7 +115,7 @@
     {
       mode = "n";
       key = "<leader>e";
-      action = "<cmd>Oil<CR>";
+      action = "<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0), false)<CR>";
       options.desc = "Open file explorer";
     }
     {
@@ -274,9 +274,92 @@
     }
     {
       mode = "n";
-      key = "<leader>b";
+      key = "<leader>dB";
+      action.__raw = ''
+        function()
+          require("dap").clear_breakpoints()
+        end
+      '';
+      options.desc = "DAP clear breakpoints";
+    }
+    {
+      mode = "n";
+      key = "<leader>db";
       action = "<cmd>lua require('dap').toggle_breakpoint()<CR>";
       options.desc = "DAP breakpoint";
+    }
+    {
+      mode = "n";
+      key = "<leader>dc";
+      action.__raw = ''
+        function()
+          vim.ui.input({ prompt = "Breakpoint condition: " }, function(condition)
+            if condition and condition ~= "" then
+              require("dap").set_breakpoint(condition)
+            end
+          end)
+        end
+      '';
+      options.desc = "DAP conditional breakpoint";
+    }
+    {
+      mode = "n";
+      key = "<leader>dh";
+      action.__raw = ''
+        function()
+          vim.ui.input({ prompt = "Hit condition: " }, function(hit_condition)
+            if hit_condition and hit_condition ~= "" then
+              require("dap").set_breakpoint(nil, hit_condition)
+            end
+          end)
+        end
+      '';
+      options.desc = "DAP hit condition breakpoint";
+    }
+    {
+      mode = "n";
+      key = "<leader>dl";
+      action.__raw = ''
+        function()
+          vim.ui.input({ prompt = "Log point message: " }, function(log_message)
+            if log_message and log_message ~= "" then
+              require("dap").set_breakpoint(nil, nil, log_message)
+            end
+          end)
+        end
+      '';
+      options.desc = "DAP log point";
+    }
+    {
+      mode = "n";
+      key = "<leader>dq";
+      action.__raw = ''
+        function()
+          require("dap").terminate()
+          require("dapui").close()
+        end
+      '';
+      options.desc = "DAP terminate";
+    }
+    {
+      mode = "n";
+      key = "<leader>dw";
+      action.__raw = ''
+        function()
+          require("dap.ui.widgets").hover()
+        end
+      '';
+      options.desc = "DAP hover variable";
+    }
+    {
+      mode = "v";
+      key = "<leader>dw";
+      action.__raw = ''
+        function()
+          require("dap.ui.widgets").visual_hover()
+        end
+      '';
+      options.desc = "DAP hover selection";
     }
     {
       mode = "n";
@@ -292,7 +375,7 @@
     }
     {
       mode = "n";
-      key = "<leader>dl";
+      key = "<leader>dL";
       action = "<cmd>lua require('dap').run_last()<CR>";
       options.desc = "DAP run last";
     }

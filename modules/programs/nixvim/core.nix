@@ -100,11 +100,69 @@
       };
       luasnip.enable = true;
       web-devicons.enable = true;
+      dashboard = {
+        enable = true;
+        settings = {
+          theme = "hyper";
+          change_to_vcs_root = true;
+          config = {
+            packages.enable = false;
+            project.enable = false;
+            mru = {
+              limit = 8;
+              cwd_only = false;
+            };
+            header = [
+              ""
+              "      N I X V I M"
+              ""
+            ];
+            shortcut = [
+              {
+                icon = "F ";
+                desc = "Find files";
+                group = "Label";
+                key = "f";
+                action = "FzfLua files";
+              }
+              {
+                icon = "G ";
+                desc = "Live grep";
+                group = "Label";
+                key = "g";
+                action = "FzfLua live_grep";
+              }
+              {
+                icon = "R ";
+                desc = "Recent files";
+                group = "Label";
+                key = "r";
+                action = "FzfLua oldfiles";
+              }
+              {
+                icon = "N ";
+                desc = "New file";
+                group = "Label";
+                key = "n";
+                action = "enew";
+              }
+              {
+                icon = "Q ";
+                desc = "Quit";
+                group = "Label";
+                key = "q";
+                action = "qa";
+              }
+            ];
+            footer = [ "Ready." ];
+          };
+        };
+      };
       trouble.enable = true;
       oil = {
         enable = true;
         settings = {
-          default_file_explorer = true;
+          default_file_explorer = false;
           columns = [ "icon" ];
           view_options.show_hidden = true;
           win_options = {
@@ -119,10 +177,30 @@
           };
         };
       };
+      mini-files = {
+        enable = true;
+        settings = {
+          options = {
+            permanent_delete = false;
+            use_as_default_explorer = true;
+          };
+          windows = {
+            preview = true;
+            width_focus = 35;
+            width_preview = 80;
+          };
+        };
+      };
+      mini-indentscope = {
+        enable = true;
+        settings = {
+          draw.animation.__raw = "require('mini.indentscope').gen_animation.none()";
+        };
+      };
       todo-comments = {
         enable = true;
         keymaps = {
-          todoTelescope = {
+          todoFzfLua = {
             key = "<leader>fT";
             options.desc = "Find TODOs";
           };
@@ -135,6 +213,12 @@
       direnv.enable = true;
       flash.enable = true;
       comment.enable = true;
+      nvim-autopairs = {
+        enable = true;
+        settings = {
+          check_ts = true;
+        };
+      };
       toggleterm = {
         enable = true;
         settings = {

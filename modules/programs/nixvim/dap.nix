@@ -95,55 +95,5 @@
       },
     }
 
-    local function web_url()
-      if vim.env.DAP_WEB_URL ~= nil and vim.env.DAP_WEB_URL ~= "" then
-        return vim.env.DAP_WEB_URL
-      end
-
-      return vim.fn.input("Dev server URL: ", "http://localhost:5173")
-    end
-
-    for _, language in ipairs({
-      "javascript",
-      "typescript",
-      "javascriptreact",
-      "typescriptreact",
-      "vue",
-    }) do
-      dap.configurations[language] = {
-        {
-          type = "pwa-chrome",
-          request = "launch",
-          name = "Launch Chrome",
-          url = web_url,
-          webRoot = "''${workspaceFolder}",
-          sourceMaps = true,
-        },
-        {
-          type = "pwa-chrome",
-          request = "attach",
-          name = "Attach Chrome: 9222",
-          port = 9222,
-          webRoot = "''${workspaceFolder}",
-          sourceMaps = true,
-        },
-        {
-          type = "pwa-node",
-          request = "launch",
-          name = "Launch current file with Node",
-          program = "''${file}",
-          cwd = "''${workspaceFolder}",
-          sourceMaps = true,
-        },
-        {
-          type = "pwa-node",
-          request = "attach",
-          name = "Attach Node process",
-          processId = require("dap.utils").pick_process,
-          cwd = "''${workspaceFolder}",
-          sourceMaps = true,
-        },
-      }
-    end
   '';
 }
