@@ -66,6 +66,93 @@
     }
     {
       mode = "n";
+      key = "<leader>fs";
+      action = "<cmd>FzfLua lsp_document_symbols<CR>";
+      options.desc = "Document symbols";
+    }
+    {
+      mode = "n";
+      key = "<leader>fS";
+      action = "<cmd>FzfLua lsp_workspace_symbols<CR>";
+      options.desc = "Workspace symbols";
+    }
+    {
+      mode = "n";
+      key = "<leader>fl";
+      action = "<cmd>FzfLua lsp_finder<CR>";
+      options.desc = "LSP finder";
+    }
+    {
+      mode = "n";
+      key = "<leader>fq";
+      action = "<cmd>FzfLua quickfix<CR>";
+      options.desc = "Quickfix";
+    }
+    {
+      mode = "n";
+      key = "<leader>fk";
+      action = "<cmd>FzfLua keymaps<CR>";
+      options.desc = "Keymaps";
+    }
+    {
+      mode = "n";
+      key = "<leader>fc";
+      action = "<cmd>FzfLua commands<CR>";
+      options.desc = "Commands";
+    }
+    {
+      mode = "n";
+      key = "<leader>f/";
+      action = "<cmd>FzfLua blines<CR>";
+      options.desc = "Buffer lines";
+    }
+    {
+      mode = "n";
+      key = "<leader>sr";
+      action = "<cmd>GrugFar<CR>";
+      options.desc = "Search and replace";
+    }
+    {
+      mode = "x";
+      key = "<leader>sr";
+      action.__raw = ''
+        function()
+          require("grug-far").with_visual_selection()
+        end
+      '';
+      options.desc = "Search selection";
+    }
+    {
+      mode = "n";
+      key = "<leader>sw";
+      action.__raw = ''
+        function()
+          require("grug-far").open({
+            prefills = {
+              search = vim.fn.expand("<cword>"),
+              flags = "--fixed-strings --word-regexp",
+            },
+          })
+        end
+      '';
+      options.desc = "Search word";
+    }
+    {
+      mode = "n";
+      key = "<leader>sR";
+      action.__raw = ''
+        function()
+          require("grug-far").open({
+            prefills = {
+              paths = vim.fn.expand("%"),
+            },
+          })
+        end
+      '';
+      options.desc = "Search file";
+    }
+    {
+      mode = "n";
       key = "<leader>lm";
       action = "<cmd>Leet<CR>";
       options.desc = "LeetCode menu";
@@ -117,6 +204,23 @@
       key = "<leader>e";
       action = "<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0), false)<CR>";
       options.desc = "Open file explorer";
+    }
+    {
+      mode = "n";
+      key = "<leader>yp";
+      action.__raw = ''
+        function()
+          local path = vim.fn.expand("%:p")
+          if path == "" then
+            vim.notify("No file path to copy", vim.log.levels.WARN)
+            return
+          end
+
+          vim.fn.setreg("+", path)
+          vim.notify("Copied file path: " .. path)
+        end
+      '';
+      options.desc = "Copy file path";
     }
     {
       mode = "n";
