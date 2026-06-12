@@ -7,7 +7,7 @@
         mouse_move_enables_dpms = true;
         key_press_enables_dpms = true;
         vrr = 1;
-        enable_swallow = true;
+        enable_swallow = false;
         swallow_regex = "^(kitty)$";
       };
     };

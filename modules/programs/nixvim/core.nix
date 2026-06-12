@@ -198,6 +198,7 @@
           };
         };
       };
+      mini-ai.enable = true;
       mini-indentscope = {
         enable = true;
         settings = {
@@ -246,7 +247,7 @@
     extraConfigLua = ''
       require("monokai-pro").setup({
         filter = "pro",
-        transparent_background = false,
+        transparent_background = true,
       })
       vim.cmd.colorscheme("monokai-pro")
 

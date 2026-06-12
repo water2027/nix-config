@@ -1,26 +1,70 @@
 { pkgs, lib, ... }:
 {
   programs.nixvim.plugins.dap.enable = true;
-  programs.nixvim.plugins.dap-ui.enable = true;
+  programs.nixvim.plugins.dap-view = {
+    enable = true;
+    package = pkgs.vimPlugins.nvim-dap-view.overrideAttrs (_: {
+      name = "vimplugin-nvim-dap-view-1.2.0";
+      version = "1.2.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "igorlfs";
+        repo = "nvim-dap-view";
+        rev = "v1.2.0";
+        hash = "sha256-JRFLk+Ok8Fo8yJzwVxstcnfSIztsg+I+yQp+3g3DMcA=";
+      };
+    });
+    settings = {
+      auto_toggle = true;
+      winbar.controls.enabled = true;
+      windows.terminal.hide = [ "go" ];
+    };
+  };
 
   programs.nixvim.extraConfigLua = ''
     local dap = require("dap")
-    local dapui = require("dapui")
     local js_debug = "${lib.getExe pkgs.vscode-js-debug}"
     local codelldb = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb"
 
-    dap.listeners.before.attach.dapui_config = function()
-      dapui.open()
+    local function configure_dap_signs()
+      vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#ff6188", bold = true })
+      vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = "#ab9df2", bold = true })
+      vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = "#fc9867", bold = true })
+      vim.api.nvim_set_hl(0, "DapLogPoint", { fg = "#78dce8", bold = true })
+      vim.api.nvim_set_hl(0, "DapStopped", { fg = "#ffd866", bold = true })
+      vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#403622" })
+
+      vim.fn.sign_define("DapBreakpoint", {
+        text = "●",
+        texthl = "DapBreakpoint",
+        numhl = "DapBreakpoint",
+      })
+      vim.fn.sign_define("DapBreakpointCondition", {
+        text = "◆",
+        texthl = "DapBreakpointCondition",
+        numhl = "DapBreakpointCondition",
+      })
+      vim.fn.sign_define("DapBreakpointRejected", {
+        text = "○",
+        texthl = "DapBreakpointRejected",
+        numhl = "DapBreakpointRejected",
+      })
+      vim.fn.sign_define("DapLogPoint", {
+        text = "◆",
+        texthl = "DapLogPoint",
+        numhl = "DapLogPoint",
+      })
+      vim.fn.sign_define("DapStopped", {
+        text = "▶",
+        texthl = "DapStopped",
+        linehl = "DapStoppedLine",
+        numhl = "DapStopped",
+      })
     end
-    dap.listeners.before.launch.dapui_config = function()
-      dapui.open()
-    end
-    dap.listeners.before.event_terminated.dapui_config = function()
-      dapui.close()
-    end
-    dap.listeners.before.event_exited.dapui_config = function()
-      dapui.close()
-    end
+
+    configure_dap_signs()
+    vim.api.nvim_create_autocmd("ColorScheme", {
+      callback = configure_dap_signs,
+    })
 
     for _, adapter in ipairs({ "pwa-node", "pwa-chrome", "pwa-msedge" }) do
       dap.adapters[adapter] = {
@@ -44,28 +88,6 @@
       },
     }
 
-    dap.configurations.go = {
-      {
-        type = "go",
-        request = "launch",
-        name = "Debug current file",
-        program = "''${file}",
-      },
-      {
-        type = "go",
-        request = "launch",
-        name = "Debug current package",
-        program = "''${fileDirname}",
-      },
-      {
-        type = "go",
-        request = "attach",
-        name = "Attach Go process",
-        mode = "local",
-        processId = require("dap.utils").pick_process,
-      },
-    }
-
     dap.adapters.codelldb = {
       type = "server",
       port = "''${port}",
@@ -74,26 +96,5 @@
         args = { "--port", "''${port}" },
       },
     }
-
-    dap.configurations.rust = {
-      {
-        type = "codelldb",
-        request = "launch",
-        name = "Launch executable",
-        program = function()
-          return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
-        end,
-        cwd = "''${workspaceFolder}",
-        stopOnEntry = false,
-      },
-      {
-        type = "codelldb",
-        request = "attach",
-        name = "Attach Rust process",
-        pid = require("dap.utils").pick_process,
-        cwd = "''${workspaceFolder}",
-      },
-    }
-
   '';
 }

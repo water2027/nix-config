@@ -30,7 +30,7 @@
     }
     {
       mode = "n";
-      key = "<leader>ff";
+      key = "<C-p>";
       action = "<cmd>FzfLua files<CR>";
       options.desc = "Find files";
     }
@@ -102,7 +102,7 @@
     }
     {
       mode = "n";
-      key = "<leader>f/";
+      key = "<C-f>";
       action = "<cmd>FzfLua blines<CR>";
       options.desc = "Buffer lines";
     }
@@ -201,7 +201,7 @@
     }
     {
       mode = "n";
-      key = "<leader>e";
+      key = "<C-e>";
       action = "<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0), false)<CR>";
       options.desc = "Open file explorer";
     }
@@ -284,7 +284,17 @@
     }
     {
       mode = "n";
-      key = "<leader>/";
+      key = "<C-/>";
+      action.__raw = ''
+        function()
+          require("Comment.api").toggle.linewise.current()
+        end
+      '';
+      options.desc = "Toggle comment";
+    }
+    {
+      mode = "n";
+      key = "<C-_>";
       action.__raw = ''
         function()
           require("Comment.api").toggle.linewise.current()
@@ -294,7 +304,18 @@
     }
     {
       mode = "x";
-      key = "<leader>/";
+      key = "<C-/>";
+      action.__raw = ''
+        function()
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "nx", false)
+          require("Comment.api").toggle.linewise(vim.fn.visualmode())
+        end
+      '';
+      options.desc = "Toggle comment";
+    }
+    {
+      mode = "x";
+      key = "<C-_>";
       action.__raw = ''
         function()
           vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "nx", false)
@@ -360,6 +381,35 @@
     }
     {
       mode = "n";
+      key = "<F17>";
+      action.__raw = ''
+        function()
+          require("dap").terminate()
+          vim.cmd("DapViewClose!")
+        end
+      '';
+      options.desc = "DAP stop";
+    }
+    {
+      mode = "n";
+      key = "<F4>";
+      action = "<cmd>lua require('dap').restart()<CR>";
+      options.desc = "DAP restart";
+    }
+    {
+      mode = "n";
+      key = "<F6>";
+      action = "<cmd>lua require('dap').pause()<CR>";
+      options.desc = "DAP pause";
+    }
+    {
+      mode = "n";
+      key = "<F9>";
+      action = "<cmd>lua require('dap').toggle_breakpoint()<CR>";
+      options.desc = "DAP breakpoint";
+    }
+    {
+      mode = "n";
       key = "<F10>";
       action = "<cmd>lua require('dap').step_over()<CR>";
       options.desc = "DAP step over";
@@ -372,7 +422,7 @@
     }
     {
       mode = "n";
-      key = "<F12>";
+      key = "<F23>";
       action = "<cmd>lua require('dap').step_out()<CR>";
       options.desc = "DAP step out";
     }
@@ -385,12 +435,6 @@
         end
       '';
       options.desc = "DAP clear breakpoints";
-    }
-    {
-      mode = "n";
-      key = "<leader>db";
-      action = "<cmd>lua require('dap').toggle_breakpoint()<CR>";
-      options.desc = "DAP breakpoint";
     }
     {
       mode = "n";
@@ -436,45 +480,8 @@
     }
     {
       mode = "n";
-      key = "<leader>dq";
-      action.__raw = ''
-        function()
-          require("dap").terminate()
-          require("dapui").close()
-        end
-      '';
-      options.desc = "DAP terminate";
-    }
-    {
-      mode = "n";
-      key = "<leader>dw";
-      action.__raw = ''
-        function()
-          require("dap.ui.widgets").hover()
-        end
-      '';
-      options.desc = "DAP hover variable";
-    }
-    {
-      mode = "v";
-      key = "<leader>dw";
-      action.__raw = ''
-        function()
-          require("dap.ui.widgets").visual_hover()
-        end
-      '';
-      options.desc = "DAP hover selection";
-    }
-    {
-      mode = "n";
-      key = "<leader>dr";
-      action = "<cmd>DapToggleRepl<CR>";
-      options.desc = "DAP toggle REPL";
-    }
-    {
-      mode = "n";
       key = "<leader>du";
-      action = "<cmd>lua require('dapui').toggle()<CR>";
+      action = "<cmd>DapViewToggle!<CR>";
       options.desc = "DAP toggle UI";
     }
     {

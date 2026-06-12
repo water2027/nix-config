@@ -1,4 +1,14 @@
 {
+  programs.nixvim.plugins.notify = {
+    enable = true;
+    settings = {
+      timeout = 3000;
+      render = "compact";
+      stages = "fade_in_slide_out";
+      top_down = false;
+    };
+  };
+
   programs.nixvim.plugins.conform-nvim = {
     enable = true;
     settings = {
