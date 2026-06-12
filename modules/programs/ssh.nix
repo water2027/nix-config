@@ -12,11 +12,11 @@ in
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks = {
+    settings = {
       "github.com" = {
-        hostname = "ssh.github.com";
-        user = "git";
-        port = 443;
+        HostName = "ssh.github.com";
+        User = "git";
+        Port = 443;
       };
     };
   };

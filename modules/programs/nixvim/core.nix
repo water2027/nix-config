@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 {
   home.packages = lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) (
     with pkgs;
@@ -8,6 +13,8 @@
   );
 
   programs.nixvim = {
+    nixpkgs.source = inputs.nixpkgs.outPath;
+
     globals = {
       mapleader = ";";
       maplocalleader = ";";
