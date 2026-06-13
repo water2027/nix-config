@@ -8,6 +8,25 @@
 
 let
   rimeDir = "${config.xdg.dataHome}/fcitx5/rime";
+  essayZhHans = pkgs.runCommand "essay-zh-hans.txt" { } ''
+    ${pkgs.gawk}/bin/awk -F '\t' 'BEGIN { OFS="\t" } /^#/ || /^$/ || /^---$/ || /^\.\.\.$/ { next } NF >= 3 && $3 ~ /^[0-9]+$/ { print $1, $3 }' \
+      ${inputs.rime-ice}/cn_dicts/8105.dict.yaml > "$out"
+  '';
+  radicalPinyinDict = pkgs.runCommand "radical_pinyin.dict.yaml" { } ''
+    ${pkgs.gawk}/bin/awk '
+      /^sort: original$/ { print "# sort: original"; next }
+      /^# vocabulary: essay-zh-hans/ { print "vocabulary: essay-zh-hans # 简体字频"; next }
+      /^# max_phrase_length: 1/ && !enabledMaxPhraseLength { print "max_phrase_length: 1 # 仅调整单字"; enabledMaxPhraseLength = 1; next }
+      { print }
+    ' ${inputs.rime-ice}/radical_pinyin.dict.yaml > "$out"
+  '';
+  rimeIce = pkgs.runCommand "rime-ice-patched" { } ''
+    mkdir -p "$out"
+    cp -R ${inputs.rime-ice}/. "$out/"
+    chmod -R u+w "$out"
+    cp ${essayZhHans} "$out/essay-zh-hans.txt"
+    cp ${radicalPinyinDict} "$out/radical_pinyin.dict.yaml"
+  '';
 in
 
 {
@@ -15,7 +34,7 @@ in
     "fcitx5/themes/OriLight".source = ./themes/OriLight;
     "fcitx5/themes/OriDark".source = ./themes/OriDark;
     "fcitx5/rime" = {
-      source = inputs.rime-ice;
+      source = rimeIce;
       recursive = true;
     };
     "fcitx5/rime/default.custom.yaml".text = ''
@@ -23,20 +42,28 @@ in
         schema_list:
           - schema: double_pinyin_flypy
         menu/page_size: 7
+        switcher/save_options:
+          - traditionalization
+          - emoji
+          - full_shape
+          - search_single_char
+        ascii_composer/switch_key/Shift_L: noop
+        ascii_composer/switch_key/Shift_R: noop
     '';
     "fcitx5/rime/double_pinyin_flypy.custom.yaml".text = ''
       patch:
         switches/@1/reset: 1
+        radical_lookup/prism: radical_pinyin
     '';
     "fcitx5/rime/melt_eng.custom.yaml".text = ''
       patch:
         speller/algebra:
-          __include: melt_eng.schema.yaml:/algebra_flypy
+          __include: melt_eng.schema.yaml:/algebra_double_pinyin_flypy
     '';
     "fcitx5/rime/radical_pinyin.custom.yaml".text = ''
       patch:
         speller/algebra:
-          __include: radical_pinyin.schema.yaml:/algebra_flypy
+          __include: radical_pinyin.schema.yaml:/algebra_double_pinyin_flypy
     '';
   };
 
@@ -293,13 +320,17 @@ in
 
   home.activation.deployRimeIce = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
     rime_dir="${rimeDir}"
+    build_dir="$rime_dir/build"
 
-    if [ -e "$rime_dir/build/default.yaml" ] && ! ${pkgs.gnugrep}/bin/grep -q "double_pinyin_flypy" "$rime_dir/build/default.yaml"; then
-      mv "$rime_dir/build" "$rime_dir/build.before-rime-ice"
+    if [ -e "$build_dir/default.yaml" ] && ! ${pkgs.gnugrep}/bin/grep -q "double_pinyin_flypy" "$build_dir/default.yaml"; then
+      mv "$build_dir" "$rime_dir/build.before-rime-ice"
     fi
 
+    mkdir -p "$build_dir"
+    ${pkgs.findutils}/bin/find "$build_dir" -mindepth 1 ! -name .gitkeep -exec ${pkgs.coreutils}/bin/rm -rf {} +
+
     cd "$rime_dir"
-    ${pkgs.librime}/bin/rime_deployer --build "$rime_dir" "$rime_dir" "$rime_dir/build"
+    ${pkgs.librime}/bin/rime_deployer --build "$rime_dir" "$rime_dir" "$build_dir"
     ${pkgs.librime}/bin/rime_deployer --set-active-schema double_pinyin_flypy
   '';
 
