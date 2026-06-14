@@ -97,4 +97,124 @@
       },
     }
   '';
+
+  programs.nixvim.keymaps = [
+    {
+      mode = "n";
+      key = "<F5>";
+      action = "<cmd>lua require('dap').continue()<CR>";
+      options.desc = "DAP continue";
+    }
+    {
+      mode = "n";
+      key = "<F17>";
+      action.__raw = ''
+        function()
+          require("dap").terminate()
+          vim.cmd("DapViewClose!")
+        end
+      '';
+      options.desc = "DAP stop";
+    }
+    {
+      mode = "n";
+      key = "<F4>";
+      action = "<cmd>lua require('dap').restart()<CR>";
+      options.desc = "DAP restart";
+    }
+    {
+      mode = "n";
+      key = "<F6>";
+      action = "<cmd>lua require('dap').pause()<CR>";
+      options.desc = "DAP pause";
+    }
+    {
+      mode = "n";
+      key = "<F9>";
+      action = "<cmd>lua require('dap').toggle_breakpoint()<CR>";
+      options.desc = "DAP breakpoint";
+    }
+    {
+      mode = "n";
+      key = "<F10>";
+      action = "<cmd>lua require('dap').step_over()<CR>";
+      options.desc = "DAP step over";
+    }
+    {
+      mode = "n";
+      key = "<F11>";
+      action = "<cmd>lua require('dap').step_into()<CR>";
+      options.desc = "DAP step into";
+    }
+    {
+      mode = "n";
+      key = "<F23>";
+      action = "<cmd>lua require('dap').step_out()<CR>";
+      options.desc = "DAP step out";
+    }
+    {
+      mode = "n";
+      key = "<leader>dB";
+      action.__raw = ''
+        function()
+          require("dap").clear_breakpoints()
+        end
+      '';
+      options.desc = "DAP clear breakpoints";
+    }
+    {
+      mode = "n";
+      key = "<leader>dc";
+      action.__raw = ''
+        function()
+          vim.ui.input({ prompt = "Breakpoint condition: " }, function(condition)
+            if condition and condition ~= "" then
+              require("dap").set_breakpoint(condition)
+            end
+          end)
+        end
+      '';
+      options.desc = "DAP conditional breakpoint";
+    }
+    {
+      mode = "n";
+      key = "<leader>dh";
+      action.__raw = ''
+        function()
+          vim.ui.input({ prompt = "Hit condition: " }, function(hit_condition)
+            if hit_condition and hit_condition ~= "" then
+              require("dap").set_breakpoint(nil, hit_condition)
+            end
+          end)
+        end
+      '';
+      options.desc = "DAP hit condition breakpoint";
+    }
+    {
+      mode = "n";
+      key = "<leader>dl";
+      action.__raw = ''
+        function()
+          vim.ui.input({ prompt = "Log point message: " }, function(log_message)
+            if log_message and log_message ~= "" then
+              require("dap").set_breakpoint(nil, nil, log_message)
+            end
+          end)
+        end
+      '';
+      options.desc = "DAP log point";
+    }
+    {
+      mode = "n";
+      key = "<leader>du";
+      action = "<cmd>DapViewToggle!<CR>";
+      options.desc = "DAP toggle UI";
+    }
+    {
+      mode = "n";
+      key = "<leader>dL";
+      action = "<cmd>lua require('dap').run_last()<CR>";
+      options.desc = "DAP run last";
+    }
+  ];
 }

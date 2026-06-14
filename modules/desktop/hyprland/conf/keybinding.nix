@@ -31,15 +31,16 @@ let
     exec ${wlogout}
   '';
   toggleWaybar = pkgs.writeShellScriptBin "toggle-waybar" ''
-    if ${pgrep} -f '/bin/waybar($| )' >/dev/null; then
-      ${pkill} -f '/bin/waybar($| )'
+    if ${pgrep} -x waybar >/dev/null; then
+      ${pkill} -x waybar
     else
       exec ${waybar}
     fi
   '';
   toggleWallpaper = pkgs.writeShellScriptBin "toggle-wallpaper" ''
-    if ${pgrep} -f '/bin/linux-wallpaperengine.*2970412969' >/dev/null; then
-      ${pkill} -f '/bin/linux-wallpaperengine.*2970412969'
+    pattern='(^|/)linux-wallpaperengine( |$).*2970412969'
+    if ${pgrep} -f "$pattern" >/dev/null; then
+      ${pkill} -f "$pattern"
     else
       exec ${linuxWallpaperEngine} -r eDP-1 --scaling fill 2970412969
     fi

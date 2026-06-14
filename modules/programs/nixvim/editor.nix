@@ -1,116 +1,146 @@
 {
-  programs.nixvim.plugins.notify = {
-    enable = true;
-    settings = {
-      timeout = 3000;
-      render = "compact";
-      stages = "fade_in_slide_out";
-      top_down = false;
-    };
-  };
-
-  programs.nixvim.plugins.conform-nvim = {
-    enable = true;
-    settings = {
-      format_on_save = {
-        timeout_ms = 500;
-        lsp_fallback = true;
+  programs.nixvim = {
+    plugins = {
+      conform-nvim = {
+        enable = true;
+        settings = {
+          format_on_save = {
+            timeout_ms = 500;
+            lsp_fallback = true;
+          };
+          formatters_by_ft = {
+            nix = [ "nixfmt" ];
+            javascript = [
+              "eslint_d"
+              "prettier"
+            ];
+            typescript = [
+              "eslint_d"
+              "prettier"
+            ];
+            javascriptreact = [
+              "eslint_d"
+              "prettier"
+            ];
+            typescriptreact = [
+              "eslint_d"
+              "prettier"
+            ];
+            vue = [
+              "eslint_d"
+              "prettier"
+            ];
+          };
+        };
       };
-      formatters_by_ft = {
-        nix = [ "nixfmt" ];
-      };
-    };
-  };
 
-  programs.nixvim.plugins.lualine = {
-    enable = true;
-    settings = {
-      options = {
-        globalstatus = true;
+      mini-ai.enable = true;
+      mini-surround.enable = true;
+      mini-indentscope = {
+        enable = true;
+        settings = {
+          draw.animation.__raw = "require('mini.indentscope').gen_animation.none()";
+        };
       };
-    };
-  };
 
-  programs.nixvim.plugins.grug-far = {
-    enable = true;
-    settings = {
-      debounceMs = 300;
-      minSearchChars = 2;
-      normalModeSearch = false;
-      engine = "ripgrep";
-      engines.ripgrep = {
-        path = "rg";
-        showReplaceDiff = true;
-        placeholders = {
-          enabled = true;
-          search = "ex: foo   foo([a-z0-9]*)";
-          replacement = "ex: bar   \${1}_foo";
-          filesFilter = "ex: *.nix   *.{lua;js;ts}   !result/**";
-          flags = "ex: --fixed-strings --ignore-case --case-sensitive --word-regexp";
-          paths = "ex: ./modules   ~/.config";
+      todo-comments = {
+        enable = true;
+        keymaps = {
+          todoFzfLua = {
+            key = "<leader>fT";
+            options.desc = "Find TODOs";
+          };
+          todoTrouble = {
+            key = "<leader>xt";
+            options.desc = "TODOs";
+          };
+        };
+      };
+
+      trouble.enable = true;
+      direnv.enable = true;
+      comment.enable = true;
+      nvim-autopairs = {
+        enable = true;
+        settings = {
+          check_ts = true;
         };
       };
     };
-  };
 
-  programs.nixvim.plugins.fzf-lua = {
-    enable = true;
-    profile = "telescope";
-    settings = {
-      ui_select = true;
-      winopts = {
-        height = 0.85;
-        width = 0.9;
-        row = 0.35;
-        col = 0.5;
-        border = "rounded";
-        preview = {
-          layout = "flex";
-          horizontal = "right:55%";
-          vertical = "down:45%";
-          hidden = false;
-          wrap = false;
-        };
-      };
-      fzf_opts = {
-        "--layout" = "reverse";
-        "--info" = "inline-right";
-        "--cycle" = true;
-      };
-      defaults = {
-        file_icons = true;
-        git_icons = true;
-        color_icons = true;
-        formatter = "path.filename_first";
-      };
-      keymap.fzf = {
-        tab = "down";
-        btab = "up";
-      };
-      files = {
-        hidden = true;
-        follow = false;
-        no_ignore = false;
-        multiprocess = true;
-        git_icons = true;
-        file_icons = true;
-        color_icons = true;
-      };
-      grep = {
-        rg_glob = true;
-        rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e";
-      };
-      oldfiles = {
-        include_current_session = true;
-        cwd_only = false;
-      };
-      buffers = {
-        sort_lastused = true;
-        ignore_current_buffer = true;
-      };
-      lsp = {
-        jump1 = false;
-      };
-    };
+    keymaps = [
+      {
+        mode = "n";
+        key = "<leader>cf";
+        action = "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>";
+        options.desc = "Format file";
+      }
+      {
+        mode = "n";
+        key = "<leader>xx";
+        action = "<cmd>Trouble diagnostics toggle<CR>";
+        options.desc = "Diagnostics";
+      }
+      {
+        mode = "n";
+        key = "<leader>xX";
+        action = "<cmd>Trouble diagnostics toggle filter.buf=0<CR>";
+        options.desc = "Buffer diagnostics panel";
+      }
+      {
+        mode = "n";
+        key = "[d";
+        action = "<cmd>lua vim.diagnostic.jump({ count = -1, float = true })<CR>";
+        options.desc = "Previous diagnostic";
+      }
+      {
+        mode = "n";
+        key = "]d";
+        action = "<cmd>lua vim.diagnostic.jump({ count = 1, float = true })<CR>";
+        options.desc = "Next diagnostic";
+      }
+      {
+        mode = "n";
+        key = "<C-/>";
+        action.__raw = ''
+          function()
+            require("Comment.api").toggle.linewise.current()
+          end
+        '';
+        options.desc = "Toggle comment";
+      }
+      {
+        mode = "n";
+        key = "<C-_>";
+        action.__raw = ''
+          function()
+            require("Comment.api").toggle.linewise.current()
+          end
+        '';
+        options.desc = "Toggle comment";
+      }
+      {
+        mode = "x";
+        key = "<C-/>";
+        action.__raw = ''
+          function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "nx", false)
+            require("Comment.api").toggle.linewise(vim.fn.visualmode())
+          end
+        '';
+        options.desc = "Toggle comment";
+      }
+      {
+        mode = "x";
+        key = "<C-_>";
+        action.__raw = ''
+          function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "nx", false)
+            require("Comment.api").toggle.linewise(vim.fn.visualmode())
+          end
+        '';
+        options.desc = "Toggle comment";
+      }
+    ];
   };
 }

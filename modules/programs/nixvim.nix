@@ -1,11 +1,19 @@
 {
   imports = [
     ./nixvim/core.nix
+    ./nixvim/appearance.nix
+    ./nixvim/treesitter.nix
     ./nixvim/lsp.nix
     ./nixvim/completion.nix
     ./nixvim/editor.nix
+    ./nixvim/navigation.nix
+    ./nixvim/search.nix
+    ./nixvim/files.nix
+    ./nixvim/git.nix
+    ./nixvim/terminal.nix
     ./nixvim/dap.nix
+    ./nixvim/http.nix
     ./nixvim/competitive.nix
-    ./nixvim/keymaps.nix
+    ./nixvim/agentic.nix
   ];
 }
