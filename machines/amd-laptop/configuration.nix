@@ -65,6 +65,18 @@
 
   services.displayManager.defaultSession = "hyprland";
 
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+      ids = [ "*" ];
+      settings = {
+        main = {
+          kpslash = "backslash";
+        };
+      };
+    };
+  };
+
   home-manager = {
     sharedModules = [
       inputs.nixvim.homeModules.nixvim

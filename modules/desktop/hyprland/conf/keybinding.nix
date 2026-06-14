@@ -20,8 +20,16 @@ let
   exec = command: "hl.dsp.exec_cmd(${toLua command})";
   pgrep = "${pkgs.procps}/bin/pgrep";
   pkill = "${pkgs.procps}/bin/pkill";
+  wlogout = lib.getExe pkgs.wlogout;
   waybar = lib.getExe pkgs.waybar;
   linuxWallpaperEngine = lib.getExe pkgs.linux-wallpaperengine;
+  togglePowerMenu = pkgs.writeShellScriptBin "toggle-power-menu" ''
+    if ${pgrep} -x wlogout >/dev/null; then
+      exec ${pkill} -x wlogout
+    fi
+
+    exec ${wlogout}
+  '';
   toggleWaybar = pkgs.writeShellScriptBin "toggle-waybar" ''
     if ${pgrep} -f '/bin/waybar($| )' >/dev/null; then
       ${pkill} -f '/bin/waybar($| )'
@@ -51,7 +59,7 @@ in
       (bind "${mainMod} + R" (exec "fuzzel"))
       (bind "${mainMod} + O" (exec (lib.getExe toggleWaybar)))
       (bind "${mainMod} + P" (exec (lib.getExe toggleWallpaper)))
-      (bind "${mainMod} + Escape" (exec "pgrep -x wlogout >/dev/null && pkill -x wlogout || wlogout"))
+      (bind "${mainMod} + Escape" (exec (lib.getExe togglePowerMenu)))
 
       (bind "${mainMod} + SHIFT + h" ''hl.dsp.layout("colresize -0.05")'')
       (bind "${mainMod} + SHIFT + l" ''hl.dsp.layout("colresize +0.05")'')
