@@ -15,7 +15,7 @@
     ../../modules/programs/ssh.nix
     ../../modules/shell/zsh.nix
     ../../modules/desktop/hyprland/home.nix
-    ../../modules/programs/vscode.nix
+    # ../../modules/programs/vscode.nix
     ../../modules/programs/nixvim.nix
     ../../modules/themes/gtk/tokyo-night.nix
   ];
