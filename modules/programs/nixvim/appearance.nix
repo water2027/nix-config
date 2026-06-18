@@ -135,8 +135,41 @@
           options = {
             globalstatus = true;
           };
+          sections = {
+            lualine_x = [
+              {
+                __unkeyed-1.__raw = ''
+                  function()
+                    local register = vim.fn.reg_recording()
+                    if register == "" then
+                      return ""
+                    end
+
+                    return "REC @" .. register
+                  end
+                '';
+                color = {
+                  fg = "#ff6188";
+                  gui = "bold";
+                };
+              }
+              "encoding"
+              "fileformat"
+              "filetype"
+            ];
+          };
         };
       };
     };
+
+    extraConfigLua = ''
+      vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+        callback = function()
+          vim.schedule(function()
+            pcall(require("lualine").refresh, { place = { "statusline" } })
+          end)
+        end,
+      })
+    '';
   };
 }

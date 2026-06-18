@@ -51,7 +51,10 @@
             file_icons = true;
             git_icons = true;
             color_icons = true;
-            formatter = "path.filename_first";
+            formatter = [
+              "path.filename_first"
+              2
+            ];
           };
           keymap.fzf = {
             tab = "down";
