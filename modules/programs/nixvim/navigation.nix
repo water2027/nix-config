@@ -9,7 +9,7 @@
           "x"
           "o"
         ];
-        key = "<leader>s";
+        key = "<leader>j";
         action.__raw = ''
           function()
             require("flash").jump()

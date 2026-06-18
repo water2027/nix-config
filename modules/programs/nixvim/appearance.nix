@@ -1,6 +1,8 @@
 {
   programs.nixvim = {
     colorscheme = "monokai-pro";
+    opts.showtabline = 2;
+
     colorschemes = {
       monokai-pro = {
         enable = true;
@@ -157,6 +159,20 @@
               "fileformat"
               "filetype"
             ];
+          };
+          tabline = {
+            lualine_a = [
+              {
+                __unkeyed-1 = "tabs";
+                mode = 2;
+                path = 0;
+              }
+            ];
+            lualine_b = [ ];
+            lualine_c = [ ];
+            lualine_x = [ ];
+            lualine_y = [ ];
+            lualine_z = [ ];
           };
         };
       };

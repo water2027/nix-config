@@ -1,25 +1,6 @@
 {
   programs.nixvim = {
     plugins = {
-      oil = {
-        enable = true;
-        settings = {
-          default_file_explorer = false;
-          columns = [ "icon" ];
-          view_options.show_hidden = true;
-          win_options = {
-            wrap = false;
-            signcolumn = "yes:2";
-            cursorcolumn = false;
-            foldcolumn = "0";
-            spell = false;
-            list = false;
-            conceallevel = 3;
-            concealcursor = "ncv";
-          };
-        };
-      };
-
       mini-files = {
         enable = true;
         settings = {

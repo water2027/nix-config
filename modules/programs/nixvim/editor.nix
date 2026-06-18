@@ -35,7 +35,10 @@
       };
 
       mini-ai.enable = true;
+      mini-cursorword.enable = true;
       mini-surround.enable = true;
+      mini-splitjoin.enable = true;
+      mini-trailspace.enable = true;
       mini-indentscope = {
         enable = true;
         settings = {
