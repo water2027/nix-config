@@ -54,7 +54,6 @@
 
       codex
       pi-coding-agent
-      pnpm
 
       typst
       tinymist

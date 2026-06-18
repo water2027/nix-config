@@ -22,7 +22,16 @@ in
     eza
     lazygit
     nodejs
+    pnpm
     python3
+  ];
+
+  home.sessionVariables = {
+    PNPM_HOME = "$HOME/.local/share/pnpm";
+  };
+
+  home.sessionPath = [
+    "$HOME/.local/share/pnpm/bin"
   ];
 
   home.shellAliases = {
