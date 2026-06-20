@@ -14,7 +14,7 @@
     ../../modules/nixos/swap.nix
     ../../modules/nixos/user.nix
     ../../modules/programs/vm.nix
-    ../../modules/programs/waydroid.nix
+    # ../../modules/programs/waydroid.nix
     ../../modules/programs/v2raya.nix
     ../../modules/programs/thunar.nix
     ../../modules/programs/steam.nix
