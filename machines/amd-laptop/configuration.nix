@@ -78,6 +78,7 @@
   };
 
   home-manager = {
+    backupFileExtension = "hm-backup";
     sharedModules = [
       inputs.nixvim.homeModules.nixvim
     ];
