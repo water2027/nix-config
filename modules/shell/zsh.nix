@@ -25,6 +25,8 @@
     autocd = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    defaultKeymap = "viins";
+    localVariables.KEYTIMEOUT = 1;
 
     initContent = ''
       proxy() {

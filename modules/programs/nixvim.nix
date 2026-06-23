@@ -14,6 +14,5 @@
     ./nixvim/dap.nix
     ./nixvim/http.nix
     ./nixvim/competitive.nix
-    ./nixvim/agentic.nix
   ];
 }

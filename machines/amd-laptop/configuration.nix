@@ -71,6 +71,7 @@
       ids = [ "*" ];
       settings = {
         main = {
+          capslock = "esc";
           kpslash = "backslash";
         };
       };

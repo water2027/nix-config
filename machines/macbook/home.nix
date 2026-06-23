@@ -3,6 +3,7 @@
     ../../modules/home/common.nix
     ../../modules/programs/direnv.nix
     ../../modules/programs/git.nix
+    ../../modules/programs/kitty.nix
     ../../modules/programs/nixvim.nix
     ../../modules/programs/vscode.nix
     ../../modules/shell/zsh.nix

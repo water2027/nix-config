@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
+  isDarwin = pkgs.stdenv.isDarwin;
+
   clip2path = pkgs.writeShellApplication {
     name = "clip2path";
     runtimeInputs = with pkgs; [
@@ -73,15 +75,21 @@ in
       background_opacity = "0.8";
       allow_remote_control = "yes";
       auto_reload_config = "-1";
+    }
+    // lib.optionalAttrs isDarwin {
+      macos_option_as_alt = "both";
     };
 
-    keybindings = {
-      "ctrl+v" =
-        "launch --type=background --allow-remote-control --keep-focus ${clip2path}/bin/clip2path";
-      "ctrl+shift+enter" = "launch --cwd=current";
-      "alt+shift+[" = "previous_tab";
-      "alt+shift+]" = "next_tab";
-    };
+    keybindings =
+      lib.optionalAttrs (!isDarwin) {
+        "ctrl+v" =
+          "launch --type=background --allow-remote-control --keep-focus ${clip2path}/bin/clip2path";
+      }
+      // {
+        "ctrl+shift+enter" = "launch --cwd=current";
+        "alt+shift+[" = "previous_tab";
+        "alt+shift+]" = "next_tab";
+      };
   };
 
   home.shellAliases = {
@@ -89,7 +97,7 @@ in
     icat = "kitten icat";
   };
 
-  home.packages = [
+  home.packages = lib.optionals (!isDarwin) [
     clip2path
   ];
 }

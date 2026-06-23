@@ -7,6 +7,7 @@
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
+  pnpmHome = if isDarwin then "$HOME/Library/pnpm" else "$HOME/.local/share/pnpm";
 in
 
 {
@@ -27,11 +28,12 @@ in
   ];
 
   home.sessionVariables = {
-    PNPM_HOME = "$HOME/.local/share/pnpm";
+    PNPM_HOME = pnpmHome;
   };
 
   home.sessionPath = [
-    "$HOME/.local/share/pnpm/bin"
+    "${pnpmHome}/bin"
+    pnpmHome
   ];
 
   home.shellAliases = {

@@ -60,6 +60,7 @@
             tab = "down";
             btab = "up";
           };
+          actions.files.__unkeyed-1 = true;
           files = {
             hidden = true;
             follow = false;
