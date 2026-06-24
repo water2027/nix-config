@@ -73,9 +73,6 @@
       typst
       tinymist
 
-      zathura
-      zathuraPkgs.zathura_pdf_mupdf
-
       maple-mono.NF-CN
 
       libreoffice-qt
