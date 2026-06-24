@@ -319,19 +319,37 @@ in
   };
 
   home.activation.deployRimeIce = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    rime_dir="${rimeDir}"
-    build_dir="$rime_dir/build"
+        rime_dir="${rimeDir}"
+        build_dir="$rime_dir/build"
+        stamp_file="$build_dir/.nix-rime-ice-stamp"
+        desired_stamp="$(${pkgs.coreutils}/bin/cat <<EOF
+    rimeIce=${rimeIce}
+    librime=${pkgs.librime}
+    default.custom=$(${pkgs.coreutils}/bin/readlink "$rime_dir/default.custom.yaml" || true)
+    double_pinyin_flypy.custom=$(${pkgs.coreutils}/bin/readlink "$rime_dir/double_pinyin_flypy.custom.yaml" || true)
+    melt_eng.custom=$(${pkgs.coreutils}/bin/readlink "$rime_dir/melt_eng.custom.yaml" || true)
+    radical_pinyin.custom=$(${pkgs.coreutils}/bin/readlink "$rime_dir/radical_pinyin.custom.yaml" || true)
+    EOF
+    )"
 
-    if [ -e "$build_dir/default.yaml" ] && ! ${pkgs.gnugrep}/bin/grep -q "double_pinyin_flypy" "$build_dir/default.yaml"; then
-      mv "$build_dir" "$rime_dir/build.before-rime-ice"
-    fi
+        if [ -e "$build_dir/default.yaml" ] \
+          && [ -e "$stamp_file" ] \
+          && [ "$(${pkgs.coreutils}/bin/cat "$stamp_file")" = "$desired_stamp" ]; then
+          echo "Rime Ice build is current; skipping deploy."
+        else
+          if [ -e "$build_dir/default.yaml" ] && ! ${pkgs.gnugrep}/bin/grep -q "double_pinyin_flypy" "$build_dir/default.yaml"; then
+            ${pkgs.coreutils}/bin/rm -rf "$rime_dir/build.before-rime-ice"
+            mv "$build_dir" "$rime_dir/build.before-rime-ice"
+          fi
 
-    mkdir -p "$build_dir"
-    ${pkgs.findutils}/bin/find "$build_dir" -mindepth 1 ! -name .gitkeep -exec ${pkgs.coreutils}/bin/rm -rf {} +
+          mkdir -p "$build_dir"
+          ${pkgs.findutils}/bin/find "$build_dir" -mindepth 1 ! -name .gitkeep -exec ${pkgs.coreutils}/bin/rm -rf {} +
 
-    cd "$rime_dir"
-    ${pkgs.librime}/bin/rime_deployer --build "$rime_dir" "$rime_dir" "$build_dir"
-    ${pkgs.librime}/bin/rime_deployer --set-active-schema double_pinyin_flypy
+          cd "$rime_dir"
+          ${pkgs.librime}/bin/rime_deployer --build "$rime_dir" "$rime_dir" "$build_dir"
+          ${pkgs.librime}/bin/rime_deployer --set-active-schema double_pinyin_flypy
+          ${pkgs.coreutils}/bin/printf '%s\n' "$desired_stamp" > "$stamp_file"
+        fi
   '';
 
   home.sessionVariables = {

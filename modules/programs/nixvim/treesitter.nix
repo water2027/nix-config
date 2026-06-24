@@ -39,7 +39,9 @@
       };
     };
 
-    treesitter-context.enable = true;
+    dropbar = {
+      enable = true;
+    };
 
     nvim-ufo = {
       enable = true;

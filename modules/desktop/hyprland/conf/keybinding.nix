@@ -20,6 +20,8 @@ let
   exec = command: "hl.dsp.exec_cmd(${toLua command})";
   pgrep = "${pkgs.procps}/bin/pgrep";
   pkill = "${pkgs.procps}/bin/pkill";
+  systemctl = "${pkgs.systemd}/bin/systemctl";
+  systemdRun = "${pkgs.systemd}/bin/systemd-run";
   wlogout = lib.getExe pkgs.wlogout;
   waybar = lib.getExe pkgs.waybar;
   linuxWallpaperEngine = lib.getExe pkgs.linux-wallpaperengine;
@@ -39,10 +41,22 @@ let
   '';
   toggleWallpaper = pkgs.writeShellScriptBin "toggle-wallpaper" ''
     pattern='(^|/)linux-wallpaperengine( |$).*2970412969'
-    if ${pgrep} -f "$pattern" >/dev/null; then
-      ${pkill} -f "$pattern"
+
+    if ${systemctl} --user is-active --quiet linux-wallpaperengine.scope; then
+      exec ${systemctl} --user stop linux-wallpaperengine.scope
+    elif ${pgrep} -f "$pattern" >/dev/null; then
+      exec ${pkill} -TERM -f "$pattern"
     else
-      exec ${linuxWallpaperEngine} -r eDP-1 --scaling fill 2970412969
+      ${systemctl} --user reset-failed linux-wallpaperengine.scope >/dev/null 2>&1 || true
+
+      exec ${systemdRun} \
+        --user \
+        --scope \
+        --collect \
+        --unit=linux-wallpaperengine \
+        --property=TimeoutStopSec=5s \
+        --property=SendSIGKILL=yes \
+        ${linuxWallpaperEngine} -r eDP-1 --scaling fill 2970412969
     fi
   '';
   workspace = number: bind "${mainMod} + ${number}" ''hl.dsp.focus({ workspace = "${number}" })'';
