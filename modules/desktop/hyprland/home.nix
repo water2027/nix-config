@@ -50,7 +50,6 @@
     ../common/wlogout/home.nix
     ../common/fcitx/home.nix
   ];
-  wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland = {
     systemd.enable = true;
     configType = "lua";

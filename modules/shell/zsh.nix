@@ -2,11 +2,9 @@
 
 {
   programs.fzf = {
-    enable = true;
     enableZshIntegration = true;
   };
   programs.starship = {
-    enable = true;
     enableZshIntegration = true;
     settings = {
       custom.proxy = {
@@ -19,8 +17,6 @@
     };
   };
   programs.zsh = {
-    enable = true;
-
     enableCompletion = true;
     autocd = true;
     autosuggestion.enable = true;
@@ -68,7 +64,6 @@
   };
 
   programs.zoxide = {
-    enable = true;
     enableZshIntegration = true;
     options = [ "--cmd=cd" ];
   };

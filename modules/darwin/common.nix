@@ -23,8 +23,6 @@
     ];
   };
 
-  programs.zsh.enable = true;
-
   fonts.packages = with pkgs; [
     maple-mono.NF-CN
   ];

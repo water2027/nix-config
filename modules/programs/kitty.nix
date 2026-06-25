@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
@@ -8,7 +13,7 @@ let
     runtimeInputs = with pkgs; [
       coreutils
       gnugrep
-      kitty
+      config.programs.kitty.package
       wl-clipboard
     ];
     text = ''
@@ -64,8 +69,6 @@ in
 
 {
   programs.kitty = {
-    enable = true;
-
     font = {
       name = "Maple Mono NF CN";
       # size = 12;

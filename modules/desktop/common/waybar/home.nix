@@ -2,11 +2,12 @@
 
 {
   programs.waybar = {
-    enable = true;
-    
     settings = {
       mainBar = {
-        output = [ "eDP-1" "Virtual-1" ];
+        output = [
+          "eDP-1"
+          "Virtual-1"
+        ];
         layer = "top";
         position = "top";
         spacing = 0;
@@ -19,11 +20,11 @@
         "modules-left" = [
           "hyprland/workspaces"
         ];
-        
+
         "modules-center" = [
           "tray"
         ];
-        
+
         "modules-right" = [
           "pulseaudio"
           "network"
@@ -43,7 +44,7 @@
           "on-click" = "activate";
           "on-scroll-up" = "hyprctl dispatch workspace e+1";
           "on-scroll-down" = "hyprctl dispatch workspace e-1";
-          "format-icons" = {};
+          "format-icons" = { };
         };
 
         tray = {
@@ -172,6 +173,6 @@
       };
     };
   };
-  
-	xdg.configFile."waybar/style.css".source = ./style.css;
+
+  xdg.configFile."waybar/style.css".source = ./style.css;
 }

@@ -97,7 +97,6 @@ in
     }
   '';
 
-  programs.wlogout.enable = true;
   programs.wlogout.layout = [
     {
       label = "lock";

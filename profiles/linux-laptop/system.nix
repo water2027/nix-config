@@ -23,6 +23,8 @@
     ../../modules/desktop/hyprland/system.nix
   ];
 
+  zramSwap.enable = true;
+
   networking.firewall.checkReversePath = false;
 
   hardware.bluetooth = {
@@ -70,6 +72,26 @@
   networking.networkmanager.enable = true;
 
   services.openssh.enable = true;
+
+  services.v2raya.enable = true;
+  services.zerotierone.enable = true;
+
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
+  programs.steam.enable = true;
+
+  programs.thunar.enable = true;
+  services.gvfs.enable = true; # 提供回收站、挂载、网络共享等功能
+  services.tumbler.enable = true; # 提供图片、视频等文件的缩略图支持
+
+  services.xserver.enable = true;
+  services.displayManager.sddm.enable = true;
+
+  programs.hyprland.enable = true;
+  programs.hyprlock.enable = true;
+  services.dbus.enable = true;
+  xdg.portal.enable = true;
 
   programs.zsh.enable = true;
   users.users.${username}.shell = pkgs.zsh;

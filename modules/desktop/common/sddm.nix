@@ -2,11 +2,9 @@
 
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
-  services.xserver.enable = true;
   services.xserver.videoDrivers = [ "amdgpu" ];
 
   services.displayManager.sddm = {
-    enable = true;
     wayland.enable = true;
     wayland.compositor = "kwin";
     extraPackages = [

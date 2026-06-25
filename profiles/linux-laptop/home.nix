@@ -19,7 +19,35 @@
     ../../modules/themes/gtk/tokyo-night.nix
   ];
 
+  programs = {
+    home-manager.enable = true;
+    git.enable = true;
+    direnv.enable = true;
+    emacs = {
+      enable = true;
+      package = pkgs.emacs-pgtk;
+    };
+    fzf.enable = true;
+    kitty.enable = true;
+    nixvim.enable = true;
+    ssh.enable = true;
+    starship.enable = true;
+    waybar.enable = true;
+    wlogout.enable = true;
+    zoxide.enable = true;
+    zsh.enable = true;
+  };
+
+  wayland.windowManager.hyprland.enable = true;
+
+  i18n.inputMethod.enable = true;
+
   my.git = {
+    userName = "water";
+    userEmail = "136900643+water2027@users.noreply.github.com";
+  };
+
+  gtk = {
     enable = true;
   };
 
