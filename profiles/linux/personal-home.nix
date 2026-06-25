@@ -23,10 +23,10 @@
     home-manager.enable = true;
     git.enable = true;
     direnv.enable = true;
-    emacs = {
-      enable = true;
-      package = pkgs.emacs-pgtk;
-    };
+    # emacs = {
+    #   enable = true;
+    #   package = pkgs.emacs-pgtk;
+    # };
     fzf.enable = true;
     kitty.enable = true;
     nixvim.enable = true;

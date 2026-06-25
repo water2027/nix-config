@@ -16,6 +16,35 @@
 
   programs.zsh.enable = true;
 
+  system = {
+    defaults = {
+      dock = {
+        # Disable all Hot Corners.
+        wvous-tl-corner = 1;
+        wvous-tr-corner = 1;
+        wvous-bl-corner = 1;
+        wvous-br-corner = 1;
+      };
+
+      hitoolbox.AppleFnUsageType = "Do Nothing";
+
+      NSGlobalDomain = {
+        "com.apple.keyboard.fnState" = true;
+        "com.apple.mouse.tapBehavior" = 1;
+      };
+
+      trackpad.Clicking = true;
+    };
+
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToEscape = true;
+    };
+
+  };
+
+  security.pam.services.sudo_local.touchIdAuth = true;
+
   homebrew = {
     enable = true;
 
