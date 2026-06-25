@@ -94,11 +94,6 @@
     in
     {
       nixosConfigurations = {
-        "linux-dev" = mkHost {
-          hostname = "linux-dev";
-          system = "x86_64-linux";
-          username = "water";
-        };
         "amd-laptop" = mkHost {
           hostname = "amd-laptop";
           system = "x86_64-linux";
