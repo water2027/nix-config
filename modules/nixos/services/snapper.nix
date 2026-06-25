@@ -3,7 +3,7 @@
 {
   systemd.tmpfiles.rules = [
     # 如果路径不存在，就自动创建一个 Btrfs 子卷 (Subvolume)
-    "v /home/${username}/.local/share/Steam 0755 water users -"
+    "v /home/${username}/.local/share/Steam 0755 ${username} users -"
 
     # 关闭 CoW (No Copy-on-Write)
     "h /home/${username}/.local/share/Steam - - - - +C"
@@ -14,7 +14,7 @@
     configs = {
       home = {
         SUBVOLUME = "/home"; # 指定要保护的子卷挂载点
-        ALLOW_USERS = [ "water" ]; # 允许你的普通用户直接管理快照，不用每次都 sudo
+        ALLOW_USERS = [ username ]; # 允许你的普通用户直接管理快照，不用每次都 sudo
         TIMELINE_CREATE = true; # 开启定时快照
         TIMELINE_CLEANUP = true; # 开启自动清理
 

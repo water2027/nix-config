@@ -6,11 +6,11 @@
 
 {
   imports = [
-    ../../profiles/macbook/system.nix
+    ../../profiles/darwin/personal-system.nix
   ];
 
   home-manager.users.${username}.imports = [
-    ../../profiles/macbook/home.nix
+    ../../profiles/darwin/personal-home.nix
     ./home.nix
   ];
 

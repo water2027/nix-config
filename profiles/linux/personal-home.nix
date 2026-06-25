@@ -7,15 +7,15 @@
 {
   imports = [
     ../../modules/home/common.nix
-    ../../modules/programs/direnv.nix
-    ../../modules/programs/emacs.nix
-    ../../modules/programs/git.nix
-    ../../modules/programs/kitty.nix
-    ../../modules/programs/proxychains.nix
-    ../../modules/programs/ssh.nix
+    ../../modules/home/program-settings/direnv.nix
+    ../../modules/home/program-settings/emacs.nix
+    ../../modules/home/program-settings/git.nix
+    ../../modules/home/program-settings/kitty.nix
+    ../../modules/home/program-settings/proxychains.nix
+    ../../modules/home/program-settings/ssh.nix
     ../../modules/shell/zsh.nix
     ../../modules/desktop/hyprland/home.nix
-    ../../modules/programs/nixvim.nix
+    ../../modules/home/program-settings/nixvim.nix
     ../../modules/themes/gtk/tokyo-night.nix
   ];
 

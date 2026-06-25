@@ -1,11 +1,11 @@
 {
   imports = [
     ../../modules/home/common.nix
-    ../../modules/programs/direnv.nix
-    ../../modules/programs/git.nix
-    ../../modules/programs/kitty.nix
-    ../../modules/programs/nixvim.nix
-    ../../modules/programs/vscode.nix
+    ../../modules/home/program-settings/direnv.nix
+    ../../modules/home/program-settings/git.nix
+    ../../modules/home/program-settings/kitty.nix
+    ../../modules/home/program-settings/nixvim.nix
+    ../../modules/home/program-settings/vscode.nix
     ../../modules/shell/zsh.nix
   ];
 

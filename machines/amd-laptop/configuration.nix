@@ -9,8 +9,9 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../profiles/linux-laptop/system.nix
-    # ../../modules/programs/waydroid.nix
+    ../../profiles/nixos/personal-system.nix
+    ../../modules/nixos/hardware/amdgpu-sddm.nix
+    # ../../modules/nixos/virtualisation/waydroid.nix
   ];
 
   # Bootloader.
@@ -35,7 +36,7 @@
   };
 
   home-manager.users.${username}.imports = [
-    ../../profiles/linux-laptop/home.nix
+    ../../profiles/linux/personal-home.nix
     ./home.nix
   ];
 

@@ -2,22 +2,15 @@
   pkgs,
   inputs,
   lib,
-  config,
   username,
   ...
 }:
 
 {
-  nix.extraOptions = ''
-    !include ${config.sops.secrets.github_token_nix.path}
-  '';
-
   imports = [
     ../nix/common.nix
     ../system/packages.nix
     inputs.home-manager.nixosModules.home-manager
-    inputs.sops-nix.nixosModules.sops
-    ../../secrets/sops.nix
   ];
 
   systemd.tmpfiles.rules = [

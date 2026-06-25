@@ -10,16 +10,16 @@
 {
   imports = [
     ../../modules/nixos/common.nix
+    ../../modules/nixos/secrets.nix
     ../../modules/nixos/zram.nix
     ../../modules/nixos/swap.nix
     ../../modules/nixos/user.nix
-    ../../modules/programs/vm.nix
-    ../../modules/programs/v2raya.nix
-    ../../modules/programs/thunar.nix
-    ../../modules/programs/steam.nix
-    ../../modules/programs/snapper.nix
-    ../../modules/programs/zerotier.nix
-    ../../modules/desktop/common/sddm.nix
+    ../../modules/nixos/virtualisation/libvirt.nix
+    ../../modules/nixos/services/v2raya.nix
+    ../../modules/nixos/programs/thunar.nix
+    ../../modules/nixos/programs/steam.nix
+    ../../modules/nixos/services/snapper.nix
+    ../../modules/nixos/services/zerotier.nix
     ../../modules/desktop/hyprland/system.nix
   ];
 
