@@ -34,6 +34,12 @@
       };
 
       trackpad.Clicking = true;
+
+      CustomUserPreferences = {
+        "com.apple.screencapture" = {
+          "show-thumbnail" = false;
+        };
+      };
     };
 
     keyboard = {
@@ -56,6 +62,8 @@
 
     brews = [
       "mas" # 用于通过命令行下载 Mac App Store 的软件
+      "fnm"
+      "bun"
     ];
 
     # 图形界面软件 (brew install --cask xxx)
@@ -64,6 +72,8 @@
       "visual-studio-code"
       "kitty"
       "oneclip"
+      "cc-switch"
+      "codex"
     ];
 
     # Mac App Store 软件
@@ -78,4 +88,9 @@
     HOMEBREW_BREW_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git";
     HOMEBREW_CORE_GIT_REMOTE = "https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git";
   };
+
+  environment.systemPath = [
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+  ];
 }
