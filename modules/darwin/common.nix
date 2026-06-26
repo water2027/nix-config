@@ -27,7 +27,6 @@
     maple-mono.NF-CN
   ];
 
-  environment.enableAllTerminfo = true;
   environment.variables = {
     EDITOR = "vim";
   };
