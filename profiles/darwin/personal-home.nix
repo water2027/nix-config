@@ -25,10 +25,5 @@
     zsh.enable = true;
   };
 
-  my.git = {
-    userName = "water";
-    userEmail = "136900643+water2027@users.noreply.github.com";
-  };
-
   home.stateVersion = "25.11";
 }
