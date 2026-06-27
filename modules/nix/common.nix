@@ -6,11 +6,12 @@
 }:
 
 let
-  proxy = "http://127.0.0.1:20171";
+  proxy = "http://127.0.0.1:20172";
   noProxy = lib.concatStringsSep "," [
     "127.0.0.1"
     "localhost"
     "::1"
+    ".cn"
     "mirrors.tuna.tsinghua.edu.cn"
     ".tuna.tsinghua.edu.cn"
     "mirrors.ustc.edu.cn"
