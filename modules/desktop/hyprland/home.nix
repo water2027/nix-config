@@ -1,5 +1,12 @@
 { pkgs, ... }:
 
+let
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
+  loginctl = "${pkgs.systemd}/bin/loginctl";
+  pgrep = "${pkgs.procps}/bin/pgrep";
+in
+
 {
   home.packages = with pkgs; [
     fuzzel
@@ -14,24 +21,28 @@
     linux-wallpaperengine
   ];
 
-  xdg.configFile."hypr/hypridle.conf".text = ''
-    general {
-      lock_cmd = pidof hyprlock || hyprlock
-      before_sleep_cmd = loginctl lock-session
-      after_sleep_cmd = hyprctl dispatch 'hl.dsp.dpms("on")'
-    }
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        lock_cmd = "${pgrep} -x hyprlock >/dev/null || ${hyprlock}";
+        before_sleep_cmd = "${loginctl} lock-session";
+        after_sleep_cmd = "${hyprctl} dispatch dpms on";
+      };
 
-    listener {
-      timeout = 600
-      on-timeout = loginctl lock-session
-    }
-
-    listener {
-      timeout = 900
-      on-timeout = hyprctl dispatch 'hl.dsp.dpms("off")'
-      on-resume = hyprctl dispatch 'hl.dsp.dpms("on")'
-    }
-  '';
+      listener = [
+        {
+          timeout = 600;
+          on-timeout = "${loginctl} lock-session";
+        }
+        {
+          timeout = 900;
+          on-timeout = "${hyprctl} dispatch dpms off";
+          on-resume = "${hyprctl} dispatch dpms on";
+        }
+      ];
+    };
+  };
 
   imports = [
     ./conf/autostart.nix
