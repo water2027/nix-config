@@ -24,17 +24,19 @@ let
   systemdRun = "${pkgs.systemd}/bin/systemd-run";
   wlogout = lib.getExe pkgs.wlogout;
   waybar = lib.getExe pkgs.waybar;
+  waybarPattern = lib.escapeShellArg "(^|/)(waybar|\\.waybar-wrapped)( |$)";
   linuxWallpaperEngine = lib.getExe pkgs.linux-wallpaperengine;
   togglePowerMenu = pkgs.writeShellScriptBin "toggle-power-menu" ''
     if ${pgrep} -x wlogout >/dev/null; then
-      exec ${pkill} -x wlogout
+      ${pkill} -x wlogout
+      exit 0
     fi
 
     exec ${wlogout}
   '';
   toggleWaybar = pkgs.writeShellScriptBin "toggle-waybar" ''
-    if ${pgrep} -x waybar >/dev/null; then
-      ${pkill} -x waybar
+    if ${pgrep} -f ${waybarPattern} >/dev/null; then
+      ${pkill} -TERM -f ${waybarPattern}
     else
       exec ${waybar}
     fi
