@@ -10,7 +10,6 @@ in
 {
   home.packages = with pkgs; [
     fuzzel
-    swaynotificationcenter
     copyq
     brightnessctl
     grim
@@ -58,6 +57,7 @@ in
     ./conf/misc.nix
 
     ../common/waybar/home.nix
+    ../common/wayle/home.nix
     ../common/wlogout/home.nix
     ../common/fcitx/home.nix
   ];

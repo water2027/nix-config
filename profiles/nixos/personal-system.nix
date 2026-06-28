@@ -18,6 +18,7 @@
     ../../modules/nixos/services/v2raya.nix
     ../../modules/nixos/programs/thunar.nix
     ../../modules/nixos/programs/steam.nix
+    ../../modules/nixos/services/power-management.nix
     ../../modules/nixos/services/snapper.nix
     ../../modules/nixos/services/zerotier.nix
     ../../modules/desktop/hyprland/system.nix

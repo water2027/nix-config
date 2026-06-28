@@ -46,7 +46,6 @@ tooltip {
 #tray,
 #mode,
 #window,
-#custom-notification,
 #custom-power,
 #workspaces {
     margin-top: 0px;
@@ -155,12 +154,4 @@ tooltip {
 
 #custom-power:hover {
     color: #eba0ac; /* 鼠标悬停时颜色变浅 */
-}
-
-#custom-notification {
-    color: #3584e4;
-}
-
-#custom-notification:hover {
-    color: #62a0ea; /* 鼠标悬停时颜色变浅 */
 }
