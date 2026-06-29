@@ -1,10 +1,16 @@
+{ hyprctl }:
+
 {
   bar = {
     background-opacity = 90;
     layout = [
       {
-        center = [ "systray" ];
-        left = [ "hyprland-workspaces" ];
+        center = [
+        ];
+        left = [
+          "hyprland-workspaces"
+          "systray"
+        ];
         monitor = "*";
         right = [
           "battery"
@@ -23,6 +29,9 @@
     font-mono = "Maple Mono NF CN";
   };
   modules = {
+    dashboard = {
+      dropdown-logout-command = "${hyprctl} dispatch exit";
+    };
     hyprland-workspaces = {
       min-workspace-count = 5;
     };
