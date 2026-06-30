@@ -20,6 +20,8 @@
       typst
       tinymist
 
+      xmind
+
       maple-mono.NF-CN
 
       libreoffice-qt
