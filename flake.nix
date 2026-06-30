@@ -27,6 +27,7 @@
 
     claude-code = {
       url = "github:ryoppippi/nix-claude-code";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sops-nix = {
@@ -50,7 +51,13 @@
         system:
         import nixpkgs {
           inherit system;
-          config.allowUnfree = true;
+          config = {
+            allowUnfree = true;
+            permittedInsecurePackages = [
+              # Required by vue-language-server's build-time pnpm pin.
+              "pnpm-10.34.0"
+            ];
+          };
           overlays = [
             inputs.nix-vscode-extensions.overlays.default
           ];

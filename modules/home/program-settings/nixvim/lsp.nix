@@ -26,6 +26,7 @@
           tsgo = fallbackLsp;
           eslint = fallbackLsp;
           vue_ls = fallbackLsp // {
+            package = pkgs.vue-language-server;
             vtslsIntegration = false;
           };
           html = fallbackLsp;
