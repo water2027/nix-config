@@ -35,6 +35,10 @@
     hyprland-workspaces = {
       min-workspace-count = 5;
     };
+    volume = {
+      "scroll-up" = "wayle audio output-volume +5";
+      "scroll-down" = "wayle audio output-volume -5";
+    };
     weather = {
       time-format = "24h";
     };
