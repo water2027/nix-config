@@ -25,6 +25,8 @@
       maple-mono.NF-CN
 
       libreoffice-qt
+
+      wireguard-tools
     ]
   );
 }

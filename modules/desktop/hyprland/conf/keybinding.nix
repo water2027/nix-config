@@ -42,7 +42,7 @@ let
     fi
   '';
   toggleWallpaper = pkgs.writeShellScriptBin "toggle-wallpaper" ''
-    pattern='(^|/)linux-wallpaperengine( |$).*2970412969'
+    pattern='(^|/)linux-wallpaperengine( |$).*3248298131'
 
     if ${systemctl} --user is-active --quiet linux-wallpaperengine.scope; then
       exec ${systemctl} --user stop linux-wallpaperengine.scope
@@ -58,7 +58,7 @@ let
         --unit=linux-wallpaperengine \
         --property=TimeoutStopSec=5s \
         --property=SendSIGKILL=yes \
-        ${linuxWallpaperEngine} -r eDP-1 --scaling fill 2970412969
+        ${linuxWallpaperEngine} -r eDP-1 --scaling fill 3248298131
     fi
   '';
   workspace = number: bind "${mainMod} + ${number}" ''hl.dsp.focus({ workspace = "${number}" })'';

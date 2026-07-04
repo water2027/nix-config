@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 let
   startWallpaper = pkgs.writeShellScriptBin "start-wallpaper" ''
-    pattern='(^|/)linux-wallpaperengine( |$).*2970412969'
+    pattern='(^|/)linux-wallpaperengine( |$).*3248298131'
 
     if ${pkgs.systemd}/bin/systemctl --user is-active --quiet linux-wallpaperengine.scope; then
       exit 0
@@ -20,7 +20,7 @@ let
       --unit=linux-wallpaperengine \
       --property=TimeoutStopSec=5s \
       --property=SendSIGKILL=yes \
-      ${lib.getExe pkgs.linux-wallpaperengine} -r eDP-1 --scaling fill 2970412969
+      ${lib.getExe pkgs.linux-wallpaperengine} -r eDP-1 --scaling fill 3248298131
   '';
 in
 {
