@@ -23,11 +23,11 @@
             installRustc = false;
             installRustfmt = false;
           };
-          tsgo = fallbackLsp;
+          vtsls = fallbackLsp;
           eslint = fallbackLsp;
           vue_ls = fallbackLsp // {
             package = pkgs.vue-language-server;
-            vtslsIntegration = false;
+            vtslsIntegration = true;
           };
           html = fallbackLsp;
           cssls = fallbackLsp;
