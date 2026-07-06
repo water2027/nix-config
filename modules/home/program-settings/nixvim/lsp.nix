@@ -15,7 +15,33 @@
         '';
         servers = {
           nixd = fallbackLsp;
-          clangd = fallbackLsp;
+          clangd = fallbackLsp // {
+            cmd = [
+              "clangd"
+              "--background-index"
+              "--clang-tidy"
+              "--completion-style=detailed"
+              "--header-insertion=iwyu"
+              "--function-arg-placeholders"
+              "--fallback-style=llvm"
+            ];
+            filetypes = [
+              "c"
+              "cpp"
+              "objc"
+              "objcpp"
+              "cuda"
+            ];
+            rootMarkers = [
+              ".clangd"
+              ".clang-tidy"
+              ".clang-format"
+              "compile_commands.json"
+              "compile_flags.txt"
+              "configure.ac"
+              ".git"
+            ];
+          };
           gopls = fallbackLsp;
 
           rust_analyzer = fallbackLsp // {
