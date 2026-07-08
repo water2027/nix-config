@@ -83,6 +83,12 @@ in
     keymaps = [
       {
         mode = "n";
+        key = "<C-a>";
+        action = "ggVG";
+        options.desc = "Select all";
+      }
+      {
+        mode = "n";
         key = "<leader>cf";
         action = "<cmd>lua require('conform').format({ lsp_fallback = true })<CR>";
         options.desc = "Format file";
