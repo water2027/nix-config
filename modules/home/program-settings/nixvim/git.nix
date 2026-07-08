@@ -22,7 +22,7 @@
     keymaps = [
       {
         mode = "n";
-        key = "<leader>gg";
+        key = "<C-g>";
         action = "<cmd>Neogit<CR>";
         options.desc = "Git status";
       }
@@ -37,12 +37,6 @@
         key = "<leader>gD";
         action = "<Plug>(diffs-gvdiff)";
         options.desc = "Current file diff vertical";
-      }
-      {
-        mode = "n";
-        key = "<leader>gR";
-        action = "<cmd>Greview<CR>";
-        options.desc = "Repository review";
       }
       {
         mode = "n";
