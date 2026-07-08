@@ -6,6 +6,7 @@
 
 {
   imports = [
+    ../../modules/home/program-settings/emacs.nix
   ];
 
   home.packages = (
@@ -29,4 +30,6 @@
       wireguard-tools
     ]
   );
+
+  programs.emacs.enable = true;
 }

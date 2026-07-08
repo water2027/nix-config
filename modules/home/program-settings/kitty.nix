@@ -85,7 +85,7 @@ in
 
     keybindings =
       lib.optionalAttrs (!isDarwin) {
-        "ctrl+v" =
+        "ctrl+shift+v" =
           "launch --type=background --allow-remote-control --keep-focus ${clip2path}/bin/clip2path";
       }
       // {

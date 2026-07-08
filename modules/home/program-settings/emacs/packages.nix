@@ -2,18 +2,27 @@
 
 {
   programs.emacs = {
+    overrides = self: super: {
+      org = super.org.overrideAttrs (old: {
+        src = pkgs.fetchurl {
+          inherit (old.src) urls;
+          hash = "sha256-QyrhwAW55Y4vtgMbIjSQOkNr+8uTSmXdumi2qc8dTIE=";
+        };
+      });
+    };
+
     extraPackages =
       epkgs: with epkgs; [
-        consult
         cape
+        consult
         corfu
+        corfu-terminal
         elfeed
-        evil
-        evil-collection
         magit
         marginalia
         markdown-mode
-        orderless
+        modus-themes
+        nix-mode
         org-roam
         pdf-tools
         vertico
