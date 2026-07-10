@@ -24,7 +24,9 @@
 (with-eval-after-load 'org
   (setq org-log-done 'time
         org-startup-indented t
-        org-hide-emphasis-markers t))
+        org-hide-emphasis-markers t)
+  (when (require 'org-modern nil t)
+    (global-org-modern-mode 1)))
 
 (setq org-roam-directory (file-truename "~/org/roam"))
 (global-set-key (kbd "C-c n f") #'org-roam-node-find)
