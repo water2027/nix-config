@@ -21,8 +21,10 @@
     autocd = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    defaultKeymap = "viins";
-    localVariables.KEYTIMEOUT = 1;
+    defaultKeymap = "emacs";
+    shellAliases = {
+      e = ''emacsclient -nw -a ""'';
+    };
 
     initContent = ''
       proxy() {

@@ -2,7 +2,8 @@
 (require 'marginalia)
 (require 'which-key)
 (require 'savehist)
-(require 'consult)
+(require 'orderless)
+(require 'embark)
 
 (vertico-mode 1)
 (marginalia-mode 1)
@@ -10,17 +11,22 @@
 (savehist-mode 1)
 
 (setq tab-always-indent 'complete
-      completion-styles '(basic substring partial-completion flex)
+      completion-styles '(orderless basic)
+      completion-category-defaults nil
       completion-category-overrides '((file (styles basic partial-completion)))
       corfu-cycle t
       corfu-auto t
       corfu-auto-delay 0.2
-      corfu-auto-prefix 2
+      corfu-auto-prefix 1
       corfu-preview-current nil
       corfu-preselect 'first
-      corfu-on-exact-match nil
-      eglot-autoshutdown t
-      eglot-extend-to-xref t)
+      corfu-on-exact-match nil)
+
+(setq prefix-help-command #'embark-prefix-help-command)
+
+(global-set-key (kbd "C-.") #'embark-act)
+(global-set-key (kbd "C-;") #'embark-dwim)
+(global-set-key (kbd "C-h B") #'embark-bindings)
 
 (defun water/enable-corfu ()
   (require 'corfu)
@@ -63,27 +69,3 @@
 
 (dolist (capf '(water/cape-file water/cape-keyword water/cape-dabbrev))
   (add-to-list 'completion-at-point-functions capf t))
-
-(defun water/eglot-completion-at-point (capf &rest args)
-  (require 'cape)
-  (apply #'cape-wrap-buster capf args))
-
-(advice-add 'eglot-completion-at-point :around #'water/eglot-completion-at-point)
-
-(add-hook 'nix-mode-hook #'eglot-ensure)
-
-(defun water/eglot-setup ()
-  (local-set-key (kbd "C-c l a") #'eglot-code-actions)
-  (local-set-key (kbd "C-c l f") #'eglot-format)
-  (local-set-key (kbd "C-c l F") #'eglot-format-buffer)
-  (local-set-key (kbd "C-c l r") #'eglot-rename))
-
-(add-hook 'eglot-managed-mode-hook #'water/eglot-setup)
-
-(global-set-key (kbd "C-s") #'consult-line)
-(global-set-key (kbd "C-x b") #'consult-buffer)
-(global-set-key (kbd "M-y") #'consult-yank-pop)
-(global-set-key (kbd "M-g g") #'consult-goto-line)
-(global-set-key (kbd "M-g o") #'consult-outline)
-(global-set-key (kbd "C-c s") #'consult-ripgrep)
-(global-set-key (kbd "C-c f") #'consult-find)
