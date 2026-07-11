@@ -20,7 +20,8 @@
       corfu-auto-prefix 1
       corfu-preview-current nil
       corfu-preselect 'first
-      corfu-on-exact-match nil)
+      corfu-on-exact-match nil
+      global-corfu-modes '((not org-mode) t))
 
 (setq prefix-help-command #'embark-prefix-help-command)
 
@@ -36,6 +37,12 @@
     (corfu-terminal-mode 1)))
 
 (run-with-idle-timer 0.2 nil #'water/enable-corfu)
+
+(defun water/disable-corfu ()
+  (when (bound-and-true-p corfu-mode)
+    (corfu-mode -1)))
+
+(add-hook 'org-mode-hook #'water/disable-corfu)
 
 (defvar water/yasnippet-ready nil)
 

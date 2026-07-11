@@ -1,11 +1,20 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
-  home.packages = with pkgs; [
-    clang-tools
-    typescript
-    typescript-language-server
-  ];
+  home.packages =
+    (with pkgs; [
+      clang-tools
+      typescript
+      typescript-language-server
+      vscode-langservers-extracted
+      vue-language-server
+    ])
+    ++ lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) (
+      with pkgs;
+      [
+        wl-clipboard
+      ]
+    );
 
   programs.emacs = {
     extraPackages =
@@ -19,6 +28,7 @@
         embark
         embark-consult
         envrc
+        less-css-mode
         magit
         marginalia
         markdown-mode
@@ -30,6 +40,7 @@
         pdf-tools
         typescript-mode
         vertico
+        vue-mode
         which-key
         yasnippet
         yasnippet-snippets

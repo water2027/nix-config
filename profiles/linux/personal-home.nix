@@ -69,6 +69,7 @@
   };
 
   home.pointerCursor = {
+    enable = true;
     name = "Nordzy-cursors";
     package = pkgs.nordzy-cursor-theme;
     size = 24;

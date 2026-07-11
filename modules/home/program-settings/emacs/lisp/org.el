@@ -2,18 +2,15 @@
 
 (make-directory org-directory t)
 
-(setq org-default-notes-file (expand-file-name "inbox.org" org-directory)
+(setq org-default-notes-file (expand-file-name "todo.org" org-directory)
       org-agenda-files (directory-files-recursively org-directory "\\.org$")
       org-refile-targets '((org-agenda-files . (:maxlevel . 3)))
       org-outline-path-complete-in-steps nil
       org-refile-use-outline-path 'file
       org-capture-templates
       `(("t" "Todo" entry
-         (file ,(expand-file-name "inbox.org" org-directory))
+         (file ,(expand-file-name "todo.org" org-directory))
          "* TODO %?\n  %U\n")
-        ("n" "Note" entry
-         (file ,(expand-file-name "inbox.org" org-directory))
-         "* %?\n  %U\n")
         ("j" "Journal" entry
          (file+datetree ,(expand-file-name "journal.org" org-directory))
          "* %?\n  %U\n")))
@@ -28,7 +25,20 @@
   (when (require 'org-modern nil t)
     (global-org-modern-mode 1)))
 
-(setq org-roam-directory (file-truename "~/org/roam"))
+(setq org-roam-directory (file-truename "~/org/roam")
+      org-roam-capture-templates
+      '(("d" "default" plain
+         "%?"
+         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n")
+         :unnarrowed t)
+        ("t" "tagged note" plain
+         "%?"
+         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n#+filetags: :%^{tags}:\n")
+         :unnarrowed t)))
+
+(make-directory org-roam-directory t)
 (global-set-key (kbd "C-c n f") #'org-roam-node-find)
 (global-set-key (kbd "C-c n i") #'org-roam-node-insert)
 (global-set-key (kbd "C-c n c") #'org-roam-capture)
