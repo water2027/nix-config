@@ -80,6 +80,14 @@
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
+  virtualisation.docker = {
+    enable = true;
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+    };
+  };
+
   programs.steam.enable = true;
 
   programs.thunar.enable = true;
@@ -95,7 +103,10 @@
   xdg.portal.enable = true;
 
   programs.zsh.enable = true;
-  users.users.${username}.shell = pkgs.zsh;
+  users.users.${username} = {
+    shell = pkgs.zsh;
+    extraGroups = [ "docker" ];
+  };
 
   programs.nix-ld.enable = true;
 
