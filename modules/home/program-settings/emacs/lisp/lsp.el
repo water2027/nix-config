@@ -4,6 +4,9 @@
 (setq eglot-autoshutdown t
       eglot-extend-to-xref t)
 
+(dolist (capability '(:documentFormattingProvider :documentRangeFormattingProvider))
+  (add-to-list 'eglot-ignored-server-capabilities capability))
+
 (dolist (mode '(("\\.ts\\'" . typescript-mode)
                 ("\\.tsx\\'" . typescript-mode)
                 ("\\.mts\\'" . typescript-mode)
@@ -65,8 +68,8 @@
 
 (defun water/eglot-setup ()
   (local-set-key (kbd "C-c l a") #'eglot-code-actions)
-  (local-set-key (kbd "C-c l f") #'eglot-format)
-  (local-set-key (kbd "C-c l F") #'eglot-format-buffer)
+  (local-set-key (kbd "C-c l f") #'apheleia-format-buffer)
+  (local-set-key (kbd "C-c l F") #'apheleia-format-buffer)
   (local-set-key (kbd "C-c l r") #'eglot-rename))
 
 (add-hook 'eglot-managed-mode-hook #'water/eglot-setup)

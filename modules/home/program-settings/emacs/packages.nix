@@ -4,6 +4,8 @@
   home.packages =
     (with pkgs; [
       clang-tools
+      eslint_d
+      prettier
       typescript
       typescript-language-server
       vscode-langservers-extracted
@@ -19,6 +21,7 @@
   programs.emacs = {
     extraPackages =
       epkgs: with epkgs; [
+        apheleia
         cape
         consult
         corfu

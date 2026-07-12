@@ -4,6 +4,7 @@
       (let ((config-dir (expand-file-name "lisp" user-emacs-directory)))
         (dolist (file '("core.el"
                         "editing.el"
+                        "formatting.el"
                         "appearance.el"
                         "org.el"
                         "git.el"
@@ -18,6 +19,7 @@
 
     ".emacs.d/lisp/core.el".source = ./lisp/core.el;
     ".emacs.d/lisp/editing.el".source = ./lisp/editing.el;
+    ".emacs.d/lisp/formatting.el".source = ./lisp/formatting.el;
     ".emacs.d/lisp/appearance.el".source = ./lisp/appearance.el;
     ".emacs.d/lisp/org.el".source = ./lisp/org.el;
     ".emacs.d/lisp/git.el".source = ./lisp/git.el;

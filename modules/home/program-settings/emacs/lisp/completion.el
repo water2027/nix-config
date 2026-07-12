@@ -29,6 +29,26 @@
 (global-set-key (kbd "C-;") #'embark-dwim)
 (global-set-key (kbd "C-h B") #'embark-bindings)
 
+(defun water/insert-two-spaces ()
+  (interactive)
+  (insert "  "))
+
+(defvar water/fixed-tab-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "TAB") #'water/insert-two-spaces)
+    (define-key map (kbd "<tab>") #'water/insert-two-spaces)
+    map))
+
+(define-minor-mode water/fixed-tab-mode
+  "Make TAB insert two spaces instead of syntax indentation."
+  :lighter nil
+  :keymap water/fixed-tab-mode-map)
+
+(with-eval-after-load 'corfu
+  (define-key corfu-map (kbd "TAB") #'corfu-complete)
+  (define-key corfu-map (kbd "<tab>") #'corfu-complete)
+  (define-key corfu-map (kbd "M-TAB") #'corfu-complete))
+
 (defun water/enable-corfu ()
   (require 'corfu)
   (global-corfu-mode 1)
@@ -61,6 +81,7 @@
   (yas-minor-mode 1))
 
 (add-hook 'prog-mode-hook #'water/enable-yasnippet)
+(add-hook 'prog-mode-hook #'water/fixed-tab-mode)
 
 (defun water/cape-file (&optional interactive)
   (require 'cape)

@@ -1,5 +1,6 @@
 (setq inhibit-startup-screen t
-      use-short-answers t)
+      use-short-answers t
+      ring-bell-function 'ignore)
 
 (require 'server)
 
