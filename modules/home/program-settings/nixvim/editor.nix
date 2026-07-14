@@ -6,6 +6,11 @@
 let
   isLinux = pkgs.stdenv.hostPlatform.isLinux;
   fcitx5Remote = lib.getExe' pkgs.fcitx5 "fcitx5-remote";
+  eslintThenPrettier = {
+    __unkeyed-1 = "eslint_d";
+    __unkeyed-2 = "prettier";
+    stop_after_first = true;
+  };
 in
 {
   programs.nixvim = {
@@ -19,26 +24,55 @@ in
           };
           formatters_by_ft = {
             nix = [ "nixfmt" ];
-            javascript = [
-              "eslint_d"
-              "prettier"
-            ];
-            typescript = [
-              "eslint_d"
-              "prettier"
-            ];
-            javascriptreact = [
-              "eslint_d"
-              "prettier"
-            ];
-            typescriptreact = [
-              "eslint_d"
-              "prettier"
-            ];
-            vue = [
-              "eslint_d"
-              "prettier"
-            ];
+            javascript = eslintThenPrettier;
+            typescript = eslintThenPrettier;
+            javascriptreact = eslintThenPrettier;
+            typescriptreact = eslintThenPrettier;
+            vue = eslintThenPrettier;
+          };
+          formatters = {
+            eslint_d = {
+              condition.__raw = ''
+                function(_, ctx)
+                  local eslint_config_files = {
+                    ".eslintrc",
+                    ".eslintrc.js",
+                    ".eslintrc.cjs",
+                    ".eslintrc.mjs",
+                    ".eslintrc.json",
+                    ".eslintrc.yaml",
+                    ".eslintrc.yml",
+                    "eslint.config.js",
+                    "eslint.config.cjs",
+                    "eslint.config.mjs",
+                    "eslint.config.ts",
+                    "eslint.config.cts",
+                    "eslint.config.mts",
+                  }
+
+                  if vim.fs.root(ctx.dirname, eslint_config_files) ~= nil then
+                    return true
+                  end
+
+                  local package_json = vim.fs.find("package.json", {
+                    upward = true,
+                    path = ctx.dirname,
+                    limit = 1,
+                  })[1]
+
+                  if package_json == nil then
+                    return false
+                  end
+
+                  local ok, package = pcall(
+                    vim.fn.json_decode,
+                    table.concat(vim.fn.readfile(package_json), "\n")
+                  )
+
+                  return ok and package ~= nil and package.eslintConfig ~= nil
+                end
+              '';
+            };
           };
         };
       };
@@ -79,6 +113,11 @@ in
         };
       };
     };
+
+    extraPackages = with pkgs; [
+      eslint_d
+      prettier
+    ];
 
     keymaps = [
       {
