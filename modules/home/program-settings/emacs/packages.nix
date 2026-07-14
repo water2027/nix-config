@@ -41,7 +41,6 @@
         orderless
         org-roam
         pdf-tools
-        typescript-mode
         vertico
         vue-mode
         which-key

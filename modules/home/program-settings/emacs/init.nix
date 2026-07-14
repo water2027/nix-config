@@ -1,3 +1,8 @@
+{ pkgs, ... }:
+
+let
+  treesitLibrarySuffix = if pkgs.stdenv.hostPlatform.isDarwin then "dylib" else "so";
+in
 {
   home.file = {
     ".emacs.d/init.el".text = ''
@@ -29,5 +34,10 @@
     ".emacs.d/lisp/files.el".source = ./lisp/files.el;
     ".emacs.d/lisp/env.el".source = ./lisp/env.el;
     ".emacs.d/lisp/lsp.el".source = ./lisp/lsp.el;
+
+    ".emacs.d/tree-sitter/libtree-sitter-typescript.${treesitLibrarySuffix}".source =
+      "${pkgs.tree-sitter-grammars.tree-sitter-typescript}/parser";
+    ".emacs.d/tree-sitter/libtree-sitter-tsx.${treesitLibrarySuffix}".source =
+      "${pkgs.tree-sitter-grammars.tree-sitter-tsx}/parser";
   };
 }

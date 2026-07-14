@@ -1,16 +1,20 @@
 (require 'eglot)
 (require 'seq)
 
+(when (require 'treesit nil t)
+  (add-to-list 'treesit-load-name-override-list
+               '(tsx "libtree-sitter-tsx" "tree_sitter_typescript")))
+
 (setq eglot-autoshutdown t
       eglot-extend-to-xref t)
 
 (dolist (capability '(:documentFormattingProvider :documentRangeFormattingProvider))
   (add-to-list 'eglot-ignored-server-capabilities capability))
 
-(dolist (mode '(("\\.ts\\'" . typescript-mode)
-                ("\\.tsx\\'" . typescript-mode)
-                ("\\.mts\\'" . typescript-mode)
-                ("\\.cts\\'" . typescript-mode)
+(dolist (mode '(("\\.ts\\'" . typescript-ts-mode)
+                ("\\.tsx\\'" . tsx-ts-mode)
+                ("\\.mts\\'" . typescript-ts-mode)
+                ("\\.cts\\'" . typescript-ts-mode)
                 ("\\.vue\\'" . vue-mode)
                 ("\\.css\\'" . css-mode)
                 ("\\.scss\\'" . scss-mode)
