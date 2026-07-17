@@ -6,6 +6,7 @@
       clang-tools
       eslint_d
       prettier
+      typstyle
       typescript
       typescript-language-server
       vscode-langservers-extracted
@@ -41,6 +42,8 @@
         orderless
         org-roam
         pdf-tools
+        typst-preview
+        typst-ts-mode
         vertico
         vue-mode
         which-key

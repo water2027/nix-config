@@ -2,12 +2,6 @@
 (require 'embark-consult)
 (require 'project)
 
-(setq project-vc-extra-root-markers '("flake.nix"
-                                      "package.json"
-                                      "Cargo.toml"
-                                      "go.mod"
-                                      "pyproject.toml"))
-
 (defun water/project-root ()
   (when-let ((project (project-current)))
     (project-root project)))

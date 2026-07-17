@@ -39,5 +39,7 @@ in
       "${pkgs.tree-sitter-grammars.tree-sitter-typescript}/parser";
     ".emacs.d/tree-sitter/libtree-sitter-tsx.${treesitLibrarySuffix}".source =
       "${pkgs.tree-sitter-grammars.tree-sitter-tsx}/parser";
+    ".emacs.d/tree-sitter/libtree-sitter-typst.${treesitLibrarySuffix}".source =
+      "${pkgs.tree-sitter-grammars.tree-sitter-typst}/parser";
   };
 }

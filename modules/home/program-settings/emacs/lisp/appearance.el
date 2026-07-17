@@ -5,8 +5,9 @@
   (tool-bar-mode -1))
 
 (defvar water/gui-font-family "Maple Mono NF CN")
-(defvar water/gui-font-size 16)
-(defvar water/gui-font-default-size 16)
+(defvar water/gui-font-size 12)
+(defvar water/gui-font-default-size 12)
+(defvar water/gui-background-opacity 85)
 
 (defun water/gui-font-spec ()
   (format "%s-%d" water/gui-font-family water/gui-font-size))
@@ -15,10 +16,23 @@
   (setq default-frame-alist (assq-delete-all 'font default-frame-alist))
   (add-to-list 'default-frame-alist `(font . ,(water/gui-font-spec))))
 
+(defun water/update-default-frame-background-opacity ()
+  (setq default-frame-alist (assq-delete-all 'alpha-background default-frame-alist))
+  (add-to-list 'default-frame-alist `(alpha-background . ,water/gui-background-opacity)))
+
 (defun water/apply-gui-font (&optional frame)
   (let ((frame (or frame (selected-frame))))
     (when (display-graphic-p frame)
       (set-frame-font (water/gui-font-spec) nil (list frame)))))
+
+(defun water/apply-gui-background-opacity (&optional frame)
+  (let ((frame (or frame (selected-frame))))
+    (when (display-graphic-p frame)
+      (set-frame-parameter frame 'alpha-background water/gui-background-opacity))))
+
+(defun water/apply-gui-frame-settings (&optional frame)
+  (water/apply-gui-font frame)
+  (water/apply-gui-background-opacity frame))
 
 (defun water/set-gui-font-size (size)
   (interactive "nGUI font size: ")
@@ -41,8 +55,9 @@
   (water/set-gui-font-size water/gui-font-default-size))
 
 (water/update-default-frame-font)
-(water/apply-gui-font)
-(add-hook 'after-make-frame-functions #'water/apply-gui-font)
+(water/update-default-frame-background-opacity)
+(water/apply-gui-frame-settings)
+(add-hook 'after-make-frame-functions #'water/apply-gui-frame-settings)
 
 (global-set-key (kbd "C-c C-+") #'water/increase-gui-font-size)
 (global-set-key (kbd "C-c C-=") #'water/increase-gui-font-size)

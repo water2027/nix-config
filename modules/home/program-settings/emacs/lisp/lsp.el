@@ -5,6 +5,8 @@
   (add-to-list 'treesit-load-name-override-list
                '(tsx "libtree-sitter-tsx" "tree_sitter_typescript")))
 
+(autoload 'typst-ts-mode "typst-ts-mode" "Major mode for Typst." t)
+
 (setq eglot-autoshutdown t
       eglot-extend-to-xref t)
 
@@ -16,10 +18,21 @@
                 ("\\.mts\\'" . typescript-ts-mode)
                 ("\\.cts\\'" . typescript-ts-mode)
                 ("\\.vue\\'" . vue-mode)
+                ("\\.typ\\'" . typst-ts-mode)
                 ("\\.css\\'" . css-mode)
                 ("\\.scss\\'" . scss-mode)
                 ("\\.less\\'" . less-css-mode)))
   (add-to-list 'auto-mode-alist mode))
+
+(setq typst-preview-browser "default"
+      typst-preview-executable "tinymist"
+      typst-preview-invert-colors "auto"
+      typst-preview-partial-rendering t)
+
+(with-eval-after-load 'typst-ts-mode
+  (setq typst-ts-mode-indent-offset 2)
+  (define-key typst-ts-mode-map (kbd "C-c C-v") #'typst-preview-mode)
+  (define-key typst-ts-mode-map (kbd "C-c C-j") #'typst-preview-send-position))
 
 (defun water/typescript-sdk-path ()
   (when-let* ((tsserver (executable-find "tsserver"))
@@ -47,6 +60,9 @@
                ("vscode-css-language-server" "--stdio")))
 
 (add-to-list 'eglot-server-programs
+             '((typst-ts-mode) . ("tinymist")))
+
+(add-to-list 'eglot-server-programs
              '((c-mode c++-mode c-ts-mode c++-ts-mode objc-mode) .
                ("clangd"
                 "--background-index"
@@ -67,8 +83,16 @@
 (dolist (hook '(typescript-mode-hook typescript-ts-mode-hook tsx-ts-mode-hook
                 vue-mode-hook
                 css-mode-hook scss-mode-hook less-css-mode-hook
+                typst-ts-mode-hook
                 c-mode-hook c++-mode-hook c-ts-mode-hook c++-ts-mode-hook objc-mode-hook))
   (add-hook hook #'eglot-ensure))
+
+(setq-default eglot-workspace-configuration
+              '(:tinymist
+                (:exportPdf "onSave"
+                 :formatterMode "typstyle"
+                 :formatterPrintWidth 100
+                 :syntaxOnly "auto")))
 
 (defun water/eglot-setup ()
   (local-set-key (kbd "C-c l a") #'eglot-code-actions)
