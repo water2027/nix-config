@@ -27,7 +27,7 @@
         enable = true;
         profile = "telescope";
         settings = {
-          # ui_select = true;
+          ui_select.__empty = null;
           winopts = {
             height = 0.85;
             width = 0.9;
