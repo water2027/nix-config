@@ -49,7 +49,9 @@
             installRustc = false;
             installRustfmt = false;
           };
-          vtsls = fallbackLsp;
+          vtsls = fallbackLsp // {
+            settings.vtsls.autoUseWorkspaceTsdk = true;
+          };
           eslint = fallbackLsp;
           vue_ls = fallbackLsp // {
             package = pkgs.vue-language-server;
