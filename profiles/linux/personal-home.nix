@@ -51,7 +51,68 @@
     enable = true;
   };
 
-  fonts.fontconfig.enable = true;
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      sansSerif = [
+        "Maple Mono NF CN"
+        "Noto Sans CJK SC"
+        "Noto Sans"
+      ];
+      serif = [
+        "Noto Serif CJK SC"
+        "Noto Serif"
+      ];
+      monospace = [
+        "Maple Mono NF CN"
+        "Noto Sans Mono CJK SC"
+      ];
+    };
+    configFile.cjk-simplified = {
+      enable = true;
+      priority = 51;
+      text = ''
+        <?xml version="1.0"?>
+        <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+        <fontconfig>
+          <match target="pattern">
+            <test name="lang" compare="contains">
+              <string>zh-cn</string>
+            </test>
+            <edit name="family" mode="prepend" binding="strong">
+              <string>Maple Mono NF CN</string>
+              <string>Noto Sans CJK SC</string>
+            </edit>
+          </match>
+
+          <alias binding="same">
+            <family>system-ui</family>
+            <prefer>
+              <family>Maple Mono NF CN</family>
+              <family>Noto Sans CJK SC</family>
+              <family>Noto Sans</family>
+            </prefer>
+          </alias>
+
+          <alias binding="same">
+            <family>Microsoft YaHei</family>
+            <prefer>
+              <family>Maple Mono NF CN</family>
+              <family>Noto Sans CJK SC</family>
+            </prefer>
+          </alias>
+
+          <alias binding="same">
+            <family>Microsoft YaHei UI</family>
+            <prefer>
+              <family>Maple Mono NF CN</family>
+              <family>Noto Sans CJK SC</family>
+            </prefer>
+          </alias>
+        </fontconfig>
+      '';
+    };
+  };
 
   xdg.mimeApps = {
     enable = true;
