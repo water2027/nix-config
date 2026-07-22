@@ -7,6 +7,27 @@
 (defun water/org-file (file)
   (expand-file-name file org-directory))
 
+(defvar water/org-diary-directory (water/org-file "diary"))
+
+(defun water/org-diary-file-for-date (&optional time)
+  "Return the diary file path for TIME, creating parent directories."
+  (let* ((decoded-time (decode-time (or time (current-time))))
+         (day (nth 3 decoded-time))
+         (month (nth 4 decoded-time))
+         (year (nth 5 decoded-time))
+         (dir (expand-file-name (format "%d/%d" year month)
+                                water/org-diary-directory))
+         (path (expand-file-name (format "%d.org" day) dir)))
+    (make-directory dir t)
+    (unless (file-exists-p path)
+      (with-temp-file path
+        (insert (format "#+title: %04d-%d-%d\n\n" year month day))))
+    path))
+
+(defun water/org-diary-file-for-today ()
+  "Return today's diary file path."
+  (water/org-diary-file-for-date))
+
 (dolist (file water/org-agenda-file-names)
   (let ((path (water/org-file file)))
     (unless (file-exists-p path)
@@ -29,8 +50,9 @@
          (file ,(water/org-file "todo.org"))
          "* TODO %?\n  %U\n")
         ("j" "Journal" entry
-         (file+datetree ,(water/org-file "journal.org"))
-         "* %?\n  %U\n")))
+         (file water/org-diary-file-for-today)
+         "* %?\n  %U\n"
+         :empty-lines 1)))
 
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
