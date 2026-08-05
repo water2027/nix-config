@@ -5,7 +5,7 @@
       {
         _args = [
           "GTK_THEME"
-          "Tokyonight-Dark"
+          "Colloid-Dark"
         ];
       }
       {

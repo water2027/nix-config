@@ -50,6 +50,10 @@
 
   services.displayManager.defaultSession = "hyprland";
 
+  # dconf 服务：让非 GNOME 桌面上的应用（如 Chrome）能读取
+  # org.gnome.desktop.interface.color-scheme 等系统颜色偏好。
+  programs.dconf.enable = true;
+
   services.keyd = {
     enable = true;
     keyboards.default = {
