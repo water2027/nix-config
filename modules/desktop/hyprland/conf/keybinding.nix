@@ -86,7 +86,7 @@ in
       (bind "${mainMod} + l" ''hl.dsp.focus({ direction = "r" })'')
       (bind "${mainMod} + k" ''hl.dsp.focus({ direction = "u" })'')
       (bind "${mainMod} + j" ''hl.dsp.focus({ direction = "d" })'')
-      (bind "${mainMod} + F" ''hl.dsp.window.fullscreen({ mode = "fullscreen" })'')
+      (bind "${mainMod} + F" ''hl.dsp.window.fullscreen_state({ internal = 2, client = 0, action = "toggle" })'')
     ]
     ++ map workspace [
       "1"
