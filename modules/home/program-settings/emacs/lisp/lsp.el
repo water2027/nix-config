@@ -1,4 +1,6 @@
 (require 'eglot)
+(require 'flymake-eslint)
+(require 'json)
 (require 'seq)
 
 (when (require 'treesit nil t)
@@ -9,6 +11,49 @@
 
 (setq eglot-autoshutdown t
       eglot-extend-to-xref t)
+
+(setq flymake-eslint-executable-name "eslint_d"
+      flymake-eslint-prefer-json-diagnostics t
+      flymake-eslint-project-markers '("eslint.config.js"
+                                       "eslint.config.cjs"
+                                       "eslint.config.mjs"
+                                       "eslint.config.ts"
+                                       "eslint.config.cts"
+                                       "eslint.config.mts"
+                                       ".eslintrc"
+                                       ".eslintrc.js"
+                                       ".eslintrc.cjs"
+                                       ".eslintrc.mjs"
+                                       ".eslintrc.json"
+                                       ".eslintrc.yaml"
+                                       ".eslintrc.yml"))
+
+(defconst water/eslint-config-files flymake-eslint-project-markers)
+
+(defun water/package-json-has-eslint-config-p (file)
+  (when (file-readable-p file)
+    (with-temp-buffer
+      (insert-file-contents file)
+      (condition-case nil
+          (gethash "eslintConfig" (json-parse-buffer :object-type 'hash-table))
+        (json-parse-error nil)
+        (error nil)))))
+
+(defun water/eslint-project-root ()
+  (locate-dominating-file
+   default-directory
+   (lambda (directory)
+     (or (seq-some
+          (lambda (file)
+            (file-exists-p (expand-file-name file directory)))
+          water/eslint-config-files)
+         (water/package-json-has-eslint-config-p
+          (expand-file-name "package.json" directory))))))
+
+(defun water/flymake-eslint-enable-maybe ()
+  (when-let ((root (water/eslint-project-root)))
+    (setq-local flymake-eslint-project-root root)
+    (flymake-eslint-enable)))
 
 (dolist (capability '(:documentFormattingProvider :documentRangeFormattingProvider))
   (add-to-list 'eglot-ignored-server-capabilities capability))
@@ -48,9 +93,15 @@
           (when-let ((tsdk (water/typescript-sdk-path)))
             (list :initializationOptions `(:typescript (:tsdk ,tsdk))))))
 
+(defun water/typescript-language-server-command ()
+  (if (executable-find "vtsls")
+      '("vtsls" "--stdio")
+    '("typescript-language-server" "--stdio")))
+
 (add-to-list 'eglot-server-programs
-             '((typescript-mode typescript-ts-mode tsx-ts-mode) .
-               ("typescript-language-server" "--stdio")))
+             `((typescript-mode typescript-ts-mode tsx-ts-mode
+                js-mode js-ts-mode js-jsx-mode) .
+               ,(water/typescript-language-server-command)))
 
 (add-to-list 'eglot-server-programs
              `((vue-mode) . ,(water/vue-language-server-command)))
@@ -81,14 +132,22 @@
 (add-hook 'nix-mode-hook #'eglot-ensure)
 
 (dolist (hook '(typescript-mode-hook typescript-ts-mode-hook tsx-ts-mode-hook
+                js-mode-hook js-ts-mode-hook js-jsx-mode-hook
                 vue-mode-hook
                 css-mode-hook scss-mode-hook less-css-mode-hook
                 typst-ts-mode-hook
                 c-mode-hook c++-mode-hook c-ts-mode-hook c++-ts-mode-hook objc-mode-hook))
   (add-hook hook #'eglot-ensure))
 
+(dolist (hook '(typescript-mode-hook typescript-ts-mode-hook tsx-ts-mode-hook
+                js-mode-hook js-ts-mode-hook js-jsx-mode-hook
+                vue-mode-hook))
+  (add-hook hook #'water/flymake-eslint-enable-maybe))
+
 (setq-default eglot-workspace-configuration
-              '(:tinymist
+              '(:vtsls
+                (:autoUseWorkspaceTsdk t)
+                :tinymist
                 (:exportPdf "onSave"
                  :formatterMode "typstyle"
                  :formatterPrintWidth 100

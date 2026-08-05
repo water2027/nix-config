@@ -9,6 +9,7 @@
       typstyle
       typescript
       typescript-language-server
+      vtsls
       vscode-langservers-extracted
       vue-language-server
     ])
@@ -32,12 +33,14 @@
         embark
         embark-consult
         envrc
+        flymake-eslint
         less-css-mode
         magit
         marginalia
         markdown-mode
         modus-themes
         nix-mode
+        org-download
         org-modern
         orderless
         org-roam

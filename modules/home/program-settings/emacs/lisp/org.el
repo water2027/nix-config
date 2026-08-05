@@ -81,6 +81,8 @@
   (dolist (lang-ext '(("typescript" . "ts")
                       ("ts" . "ts")))
     (add-to-list 'org-babel-tangle-lang-exts lang-ext))
+  (setq org-startup-with-inline-images t
+        org-image-actual-width nil)
   (when (require 'org-modern nil t)
     (global-org-modern-mode 1)))
 
@@ -119,11 +121,87 @@
                             "#+title: ${title}\n#+filetags: :%^{tags}:\n")
          :unnarrowed t)))
 
+(defvar water/org-roam-assets-directory
+  (expand-file-name "assets" org-roam-directory)
+  "Directory for images inserted into org-roam notes.")
+
+(defun water/org-download-clipboard-method ()
+  "Return a shell command that writes the clipboard image to %s."
+  (cond
+   ((and (eq system-type 'gnu/linux)
+         (executable-find "wl-paste"))
+    "wl-paste --type image/png > %s")
+   ((and (eq system-type 'gnu/linux)
+         (executable-find "xclip"))
+    "xclip -selection clipboard -t image/png -o > %s")
+   ((and (memq system-type '(darwin berkeley-unix))
+         (executable-find "pngpaste"))
+    "pngpaste %s")
+   (t
+    (user-error "No clipboard image command available"))))
+
+(defun water/org-download-screenshot-method ()
+  "Return a shell command that saves an interactive screenshot to %s."
+  (cond
+   ((and (eq system-type 'gnu/linux)
+         (executable-find "grim")
+         (executable-find "slurp"))
+    "grim -g \"$(slurp -w 0)\" %s")
+   ((and (memq system-type '(darwin berkeley-unix))
+         (executable-find "screencapture"))
+    "screencapture -i %s")
+   (t
+    (user-error "No screenshot command available"))))
+
+(defun water/org-download-insert-command-image (command basename)
+  "Run COMMAND to create BASENAME, then insert it with org-download."
+  (require 'org-download)
+  (let ((image-file (expand-file-name basename temporary-file-directory)))
+    (when (file-exists-p image-file)
+      (delete-file image-file))
+    (unwind-protect
+        (let ((exit-code (shell-command
+                          (format command (shell-quote-argument image-file)))))
+          (unless (and (integerp exit-code)
+                       (zerop exit-code)
+                       (file-exists-p image-file)
+                       (> (file-attribute-size (file-attributes image-file)) 0))
+            (user-error "No image was written"))
+          (org-download-image image-file))
+      (when (file-exists-p image-file)
+        (delete-file image-file)))))
+
+(defun water/org-download-clipboard ()
+  "Insert the current clipboard image into the Org buffer."
+  (interactive)
+  (water/org-download-insert-command-image
+   (water/org-download-clipboard-method)
+   "clipboard.png"))
+
+(defun water/org-download-screenshot ()
+  "Take a screenshot and insert it into the Org buffer."
+  (interactive)
+  (water/org-download-insert-command-image
+   (water/org-download-screenshot-method)
+   "screenshot.png"))
+
 (make-directory org-roam-directory t)
+(make-directory water/org-roam-assets-directory t)
 (global-set-key (kbd "C-c n f") #'org-roam-node-find)
 (global-set-key (kbd "C-c n i") #'org-roam-node-insert)
 (global-set-key (kbd "C-c n c") #'org-roam-capture)
 (global-set-key (kbd "C-c n l") #'org-roam-buffer-toggle)
+
+(with-eval-after-load 'org
+  (when (require 'org-download nil t)
+    (setq org-download-method 'directory
+          org-download-image-org-width 700
+          org-download-annotate-function (lambda (_link) "")
+          org-download-abbreviate-filename-function #'file-relative-name)
+    (setq-default org-download-image-dir water/org-roam-assets-directory
+                  org-download-heading-lvl nil)
+    (define-key org-mode-map (kbd "C-c i p") #'water/org-download-clipboard)
+    (define-key org-mode-map (kbd "C-c i s") #'water/org-download-screenshot)))
 
 (with-eval-after-load 'org-roam
   (org-roam-db-autosync-mode 1))
