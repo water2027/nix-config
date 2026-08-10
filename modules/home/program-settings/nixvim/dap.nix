@@ -1,6 +1,7 @@
 { pkgs, lib, ... }:
 {
   programs.nixvim.plugins.dap.enable = true;
+  programs.nixvim.plugins.overseer.enable = true;
   programs.nixvim.plugins.dap-view = {
     enable = true;
     package = pkgs.vimPlugins.nvim-dap-view.overrideAttrs (_: {
