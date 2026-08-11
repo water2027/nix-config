@@ -7,6 +7,7 @@
 {
   imports = [
     ../../modules/home/program-settings/emacs.nix
+    ../../modules/home/program-settings/obs.nix
   ];
 
   home.packages = (
