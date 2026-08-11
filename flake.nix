@@ -34,6 +34,11 @@
       url = "github:Mic92/sops-nix";
     };
 
+    silentSDDM = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     rime-ice = {
       url = "github:iDvel/rime-ice";
       flake = false;
