@@ -22,6 +22,7 @@
     ../../modules/nixos/services/snapper.nix
     ../../modules/nixos/services/zerotier.nix
     ../../modules/desktop/hyprland/system.nix
+    ../../modules/desktop/xfce/system.nix
   ];
 
   zramSwap.enable = true;

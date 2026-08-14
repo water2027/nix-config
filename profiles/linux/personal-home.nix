@@ -7,6 +7,7 @@
 {
   imports = [
     ../../modules/home/common.nix
+    ../../modules/home/xdg-user-dirs.nix
     ../../modules/home/program-settings/direnv.nix
     ../../modules/home/program-settings/emacs.nix
     ../../modules/home/program-settings/git.nix
@@ -15,6 +16,7 @@
     ../../modules/home/program-settings/ssh.nix
     ../../modules/shell/zsh.nix
     ../../modules/desktop/hyprland/home.nix
+    ../../modules/desktop/xfce/home.nix
     ../../modules/home/program-settings/nixvim.nix
     ../../modules/themes/gtk/tokyo-night.nix
   ];

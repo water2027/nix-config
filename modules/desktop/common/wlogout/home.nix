@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 let
   powerAction = "${config.home.homeDirectory}/.local/bin/power-action.sh";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprlandBin = "${pkgs.hyprland}/bin";
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
   pgrep = "${pkgs.procps}/bin/pgrep";
   pkill = "${pkgs.procps}/bin/pkill";
@@ -32,7 +32,10 @@ in
           ;;
         logout)
           close_menu
-          exec ${hyprctl} dispatch exit
+          # 给 Hyprland 发 SIGTERM：它会干净退出（main 返回 0），SDDM 随即重启 greeter 回到登录页。
+          # 不用 hyprctl dispatch exit：wlogout 里鼠标点击触发时它会挂起等待按键输入（Hyprland #4599/#5134）；
+          # 也不用 loginctl terminate-*：会强杀 sddm-helper，SDDM 判定会话异常、不再拉起登录页。
+          exec ${pkill} -TERM -f '${hyprlandBin}/Hyprland'
           ;;
         shutdown)
           close_menu

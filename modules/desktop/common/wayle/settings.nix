@@ -1,4 +1,4 @@
-{ hyprctl }:
+{ hyprlandBin, pkill }:
 
 {
   bar = {
@@ -30,7 +30,7 @@
   };
   modules = {
     dashboard = {
-      dropdown-logout-command = "${hyprctl} dispatch exit";
+      dropdown-logout-command = "${pkill} -TERM -f '${hyprlandBin}/Hyprland'";
     };
     hyprland-workspaces = {
       min-workspace-count = 5;

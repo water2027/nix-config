@@ -352,7 +352,8 @@ in
   '';
 
   home.sessionVariables = {
-    #GTK_IM_MODULE = "fcitx";
+    # X11 (如 XFCE) 下 GTK 应用通过 GTK_IM_MODULE 走 fcitx5。
+    GTK_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
     SDL_IM_MODULE = "fcitx";
