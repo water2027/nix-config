@@ -8,7 +8,6 @@
       prettier
       typstyle
       typescript
-      typescript-language-server
       vtsls
       vscode-langservers-extracted
       vue-language-server

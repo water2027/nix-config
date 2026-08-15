@@ -1,5 +1,11 @@
-(require 'consult)
-(require 'embark-consult)
+(use-package consult
+  :ensure nil
+  :defer t)
+
+(use-package embark-consult
+  :ensure nil
+  :after (embark consult))
+
 (require 'project)
 
 (defun water/project-root ()

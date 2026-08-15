@@ -13,4 +13,9 @@
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (add-hook 'dired-mode-hook #'dired-omit-mode)
 
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (when (display-graphic-p)
+              (pdf-tools-install))))
+
 (global-set-key (kbd "C-c j") #'dired-jump)

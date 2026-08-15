@@ -1,34 +1,22 @@
-(require 'eglot)
-(require 'flymake-eslint)
 (require 'json)
 (require 'seq)
 
-(when (require 'treesit nil t)
-  (add-to-list 'treesit-load-name-override-list
-               '(tsx "libtree-sitter-tsx" "tree_sitter_typescript")))
-
 (autoload 'typst-ts-mode "typst-ts-mode" "Major mode for Typst." t)
 
-(setq eglot-autoshutdown t
-      eglot-extend-to-xref t)
-
-(setq flymake-eslint-executable-name "eslint_d"
-      flymake-eslint-prefer-json-diagnostics t
-      flymake-eslint-project-markers '("eslint.config.js"
-                                       "eslint.config.cjs"
-                                       "eslint.config.mjs"
-                                       "eslint.config.ts"
-                                       "eslint.config.cts"
-                                       "eslint.config.mts"
-                                       ".eslintrc"
-                                       ".eslintrc.js"
-                                       ".eslintrc.cjs"
-                                       ".eslintrc.mjs"
-                                       ".eslintrc.json"
-                                       ".eslintrc.yaml"
-                                       ".eslintrc.yml"))
-
-(defconst water/eslint-config-files flymake-eslint-project-markers)
+(defconst water/eslint-config-files
+  '("eslint.config.js"
+    "eslint.config.cjs"
+    "eslint.config.mjs"
+    "eslint.config.ts"
+    "eslint.config.cts"
+    "eslint.config.mts"
+    ".eslintrc"
+    ".eslintrc.js"
+    ".eslintrc.cjs"
+    ".eslintrc.mjs"
+    ".eslintrc.json"
+    ".eslintrc.yaml"
+    ".eslintrc.yml"))
 
 (defun water/package-json-has-eslint-config-p (file)
   (when (file-readable-p file)
@@ -55,8 +43,12 @@
     (setq-local flymake-eslint-project-root root)
     (flymake-eslint-enable)))
 
-(dolist (capability '(:documentFormattingProvider :documentRangeFormattingProvider))
-  (add-to-list 'eglot-ignored-server-capabilities capability))
+(use-package flymake-eslint
+  :ensure nil
+  :defer t
+  :config
+  (setq flymake-eslint-executable-name "eslint_d"
+        flymake-eslint-prefer-json-diagnostics t))
 
 (dolist (mode '(("\\.ts\\'" . typescript-ts-mode)
                 ("\\.tsx\\'" . tsx-ts-mode)
@@ -94,42 +86,74 @@
             (list :initializationOptions `(:typescript (:tsdk ,tsdk))))))
 
 (defun water/typescript-language-server-command ()
-  (if (executable-find "vtsls")
-      '("vtsls" "--stdio")
-    '("typescript-language-server" "--stdio")))
-
-(add-to-list 'eglot-server-programs
-             `((typescript-mode typescript-ts-mode tsx-ts-mode
-                js-mode js-ts-mode js-jsx-mode) .
-               ,(water/typescript-language-server-command)))
-
-(add-to-list 'eglot-server-programs
-             `((vue-mode) . ,(water/vue-language-server-command)))
-
-(add-to-list 'eglot-server-programs
-             '((css-mode scss-mode less-css-mode) .
-               ("vscode-css-language-server" "--stdio")))
-
-(add-to-list 'eglot-server-programs
-             '((typst-ts-mode) . ("tinymist")))
-
-(add-to-list 'eglot-server-programs
-             '((c-mode c++-mode c-ts-mode c++-ts-mode objc-mode) .
-               ("clangd"
-                "--background-index"
-                "--clang-tidy"
-                "--completion-style=detailed"
-                "--header-insertion=iwyu"
-                "--function-arg-placeholders"
-                "--fallback-style=llvm")))
+  ;; 只保留 vtsls 作为 TypeScript / JavaScript 的 LSP。
+  '("vtsls" "--stdio"))
 
 (defun water/eglot-completion-at-point (capf &rest args)
   (require 'cape)
   (apply #'cape-wrap-buster capf args))
 
-(advice-add 'eglot-completion-at-point :around #'water/eglot-completion-at-point)
+(defun water/eglot-setup ()
+  (local-set-key (kbd "C-c l a") #'eglot-code-actions)
+  (local-set-key (kbd "C-c l f") #'apheleia-format-buffer)
+  (local-set-key (kbd "C-c l F") #'apheleia-format-buffer)
+  (local-set-key (kbd "C-c l r") #'eglot-rename))
+
+(use-package eglot
+  :ensure nil
+  :defer t
+  :config
+  (setq read-process-output-max (* 4 1024 1024)
+        eglot-autoshutdown t
+        eglot-extend-to-xref t)
+
+  (dolist (capability '(:documentFormattingProvider :documentRangeFormattingProvider))
+    (add-to-list 'eglot-ignored-server-capabilities capability))
+
+  (add-to-list 'eglot-server-programs
+               `((typescript-mode typescript-ts-mode tsx-ts-mode
+                  js-mode js-ts-mode js-jsx-mode) .
+                 ,(water/typescript-language-server-command)))
+
+  (add-to-list 'eglot-server-programs
+               `((vue-mode) . ,(water/vue-language-server-command)))
+
+  (add-to-list 'eglot-server-programs
+               '((css-mode scss-mode less-css-mode) .
+                 ("vscode-css-language-server" "--stdio")))
+
+  (add-to-list 'eglot-server-programs
+               '((typst-ts-mode) . ("tinymist")))
+
+  (add-to-list 'eglot-server-programs
+               '((nix-mode) . ("nil")))
+
+  (add-to-list 'eglot-server-programs
+               '((nix-ts-mode) . ("nil")))
+
+  (add-to-list 'eglot-server-programs
+               '((c-mode c++-mode c-ts-mode c++-ts-mode objc-mode) .
+                 ("clangd"
+                  "--background-index"
+                  "--clang-tidy"
+                  "--completion-style=detailed"
+                  "--header-insertion=iwyu"
+                  "--function-arg-placeholders"
+                  "--fallback-style=llvm")))
+
+  (advice-add 'eglot-completion-at-point :around #'water/eglot-completion-at-point)
+
+  (setq-default eglot-workspace-configuration
+                '(:vtsls
+                  (:autoUseWorkspaceTsdk t)
+                  :tinymist
+                  (:exportPdf "onSave"
+                   :formatterMode "typstyle"
+                   :formatterPrintWidth 100
+                   :syntaxOnly "auto"))))
 
 (add-hook 'nix-mode-hook #'eglot-ensure)
+(add-hook 'nix-ts-mode-hook #'eglot-ensure)
 
 (dolist (hook '(typescript-mode-hook typescript-ts-mode-hook tsx-ts-mode-hook
                 js-mode-hook js-ts-mode-hook js-jsx-mode-hook
@@ -143,20 +167,5 @@
                 js-mode-hook js-ts-mode-hook js-jsx-mode-hook
                 vue-mode-hook))
   (add-hook hook #'water/flymake-eslint-enable-maybe))
-
-(setq-default eglot-workspace-configuration
-              '(:vtsls
-                (:autoUseWorkspaceTsdk t)
-                :tinymist
-                (:exportPdf "onSave"
-                 :formatterMode "typstyle"
-                 :formatterPrintWidth 100
-                 :syntaxOnly "auto")))
-
-(defun water/eglot-setup ()
-  (local-set-key (kbd "C-c l a") #'eglot-code-actions)
-  (local-set-key (kbd "C-c l f") #'apheleia-format-buffer)
-  (local-set-key (kbd "C-c l F") #'apheleia-format-buffer)
-  (local-set-key (kbd "C-c l r") #'eglot-rename))
 
 (add-hook 'eglot-managed-mode-hook #'water/eglot-setup)

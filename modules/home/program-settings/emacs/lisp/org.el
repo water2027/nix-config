@@ -198,8 +198,19 @@
           org-download-image-org-width 700
           org-download-annotate-function (lambda (_link) "")
           org-download-abbreviate-filename-function #'file-relative-name)
-    (setq-default org-download-image-dir water/org-roam-assets-directory
-                  org-download-heading-lvl nil)
+    (setq-default org-download-heading-lvl nil)
+
+    (defun water/org-download-image-dir ()
+      (if-let ((file (buffer-file-name)))
+          (let ((dir (expand-file-name "assets" (file-name-directory file))))
+            (make-directory dir t)
+            dir)
+        water/org-roam-assets-directory))
+
+    (defun water/org-set-download-dir ()
+      (setq-local org-download-image-dir (water/org-download-image-dir)))
+
+    (add-hook 'org-mode-hook #'water/org-set-download-dir)
     (define-key org-mode-map (kbd "C-c i p") #'water/org-download-clipboard)
     (define-key org-mode-map (kbd "C-c i s") #'water/org-download-screenshot)))
 

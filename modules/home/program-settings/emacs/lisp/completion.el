@@ -1,27 +1,22 @@
 (require 'vertico)
 (require 'marginalia)
-(require 'which-key)
 (require 'savehist)
 (require 'orderless)
 (require 'embark)
 
+(use-package which-key
+  :ensure nil
+  :defer 1
+  :config (which-key-mode 1))
+
 (vertico-mode 1)
 (marginalia-mode 1)
-(which-key-mode 1)
 (savehist-mode 1)
 
 (setq tab-always-indent 'complete
       completion-styles '(orderless basic)
       completion-category-defaults nil
-      completion-category-overrides '((file (styles basic partial-completion)))
-      corfu-cycle t
-      corfu-auto t
-      corfu-auto-delay 0.2
-      corfu-auto-prefix 1
-      corfu-preview-current nil
-      corfu-preselect 'first
-      corfu-on-exact-match nil
-      global-corfu-modes '((not org-mode) t))
+      completion-category-overrides '((file (styles basic partial-completion))))
 
 (setq prefix-help-command #'embark-prefix-help-command)
 
@@ -51,18 +46,20 @@
 
 (defun water/enable-corfu ()
   (require 'corfu)
+  (setq corfu-cycle t
+        corfu-auto t
+        corfu-auto-delay 0.2
+        corfu-auto-prefix 1
+        corfu-preview-current nil
+        corfu-preselect 'first
+        corfu-on-exact-match nil
+        global-corfu-modes '((not org-mode) t))
   (global-corfu-mode 1)
   (unless (display-graphic-p)
     (require 'corfu-terminal)
     (corfu-terminal-mode 1)))
 
-(run-with-idle-timer 0.2 nil #'water/enable-corfu)
-
-(defun water/disable-corfu ()
-  (when (bound-and-true-p corfu-mode)
-    (corfu-mode -1)))
-
-(add-hook 'org-mode-hook #'water/disable-corfu)
+(water/enable-corfu)
 
 (defvar water/yasnippet-ready nil)
 

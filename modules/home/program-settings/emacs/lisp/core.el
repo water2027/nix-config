@@ -2,6 +2,17 @@
       use-short-answers t
       ring-bell-function 'ignore)
 
+(require 'use-package)
+(setq use-package-always-ensure nil)
+
+;; 启动阶段临时提高 GC 阈值，减少启动时 GC 停顿。
+(setq gc-cons-threshold (* 100 1024 1024)
+      gc-cons-percentage 0.6)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 16 1024 1024)
+                  gc-cons-percentage 0.1)))
+
 (require 'server)
 
 (unless (or noninteractive (server-running-p))
