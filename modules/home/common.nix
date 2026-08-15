@@ -8,6 +8,7 @@
 let
   isDarwin = pkgs.stdenv.isDarwin;
   pnpmHome = if isDarwin then "$HOME/Library/pnpm" else "$HOME/.local/share/pnpm";
+  fnmHome = if isDarwin then "$HOME/Library/Application Support/fnm" else "$HOME/.local/share/fnm";
 in
 
 {
@@ -22,18 +23,20 @@ in
     bat
     eza
     lazygit
-    nodejs
+    fnm
     pnpm
     python3
   ];
 
   home.sessionVariables = {
     PNPM_HOME = pnpmHome;
+    FNM_DIR = fnmHome;
   };
 
   home.sessionPath = [
     "${pnpmHome}/bin"
     pnpmHome
+    "${fnmHome}/aliases/default/bin"
   ];
 
   home.shellAliases = {

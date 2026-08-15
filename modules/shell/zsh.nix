@@ -33,6 +33,8 @@
     };
 
     initContent = ''
+      eval "$(fnm env --use-on-cd --shell zsh)"
+
       proxy() {
         export http_proxy="http://127.0.0.1:20171"
         export https_proxy="http://127.0.0.1:20171"
