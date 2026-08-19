@@ -10,7 +10,6 @@ let
 in
 {
   programs.ssh = {
-    enableDefaultConfig = false;
     settings = {
       "github.com" = {
         HostName = "ssh.github.com";
@@ -18,6 +17,9 @@ in
         Port = 443;
       };
     };
+    extraConfig = ''
+      Include ~/.ssh/config.local
+    '';
   };
 
   home.activation.createSshDir = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''

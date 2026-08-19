@@ -18,7 +18,7 @@
     ../../modules/nixos/services/v2raya.nix
     ../../modules/nixos/programs/thunar.nix
     ../../modules/nixos/programs/steam.nix
-      ../../modules/nixos/programs/bubblewrap.nix
+    ../../modules/nixos/programs/bubblewrap.nix
     ../../modules/nixos/services/power-management.nix
     ../../modules/nixos/services/snapper.nix
     ../../modules/nixos/services/zerotier.nix
@@ -77,6 +77,15 @@
   };
 
   networking.networkmanager.enable = true;
+  networking.hosts = {
+    "10.144.203.80" = [ "pi.local" ];
+  };
+
+  services.avahi = {
+    enable = true;
+    # 只发现其他 mDNS 服务/解析 .local，不发布本机服务。
+    nssmdns4 = true;
+  };
 
   services.openssh.enable = true;
 
